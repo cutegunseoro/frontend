@@ -1,6 +1,6 @@
 <template>
   <header>
-    <div>TRIP PLANNER</div>
+    <div></div>
   </header>
 </template>
 <script setup></script>

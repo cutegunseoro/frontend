@@ -5,7 +5,7 @@ import GlobalLayout from '@/layouts/GlobalLayout.vue'
 
 <template>
   <GlobalLayout>
-    <RouterView />
+      <RouterView />
   </GlobalLayout>
 </template>
 

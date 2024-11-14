@@ -1,10 +1,14 @@
 <template>
   <div :class="isMobile ? '' : 'layout-container'">
+    <!-- <AppHeader /> -->
     <slot></slot>
+    <AppFooter />
   </div>
 </template>
 
 <script setup>
+// import AppHeader from '@/components/AppHeader.vue'
+import AppFooter from '@/components/AppFooter.vue'
 import {ref, onMounted, onBeforeUnmount} from 'vue'
 
 const isMobile = ref(false)
