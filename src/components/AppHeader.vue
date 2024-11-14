@@ -4,7 +4,7 @@
   </header>
 </template>
 <script setup></script>
-<style scoped>
+<style scoped lang="scss">
 header {
   display: flex;
   width: 100%;
@@ -12,7 +12,7 @@ header {
   align-items: center;
   height: 4rem;
   font-size: 1.2rem;
-  background-color: black;
+  background-color: $primary-color;
   color: white;
 }
 </style>
