@@ -7,6 +7,7 @@
 <style scoped>
 header {
   display: flex;
+  width: 100%;
   justify-content: center;
   align-items: center;
   height: 4rem;
