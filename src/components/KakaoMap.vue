@@ -1,5 +1,5 @@
 <template>
-  <div ref="mapContainer" style="width: 100%; height: 70vh"></div>
+  <div ref="mapContainer" style="width: 100%; height: 100vh"></div>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'

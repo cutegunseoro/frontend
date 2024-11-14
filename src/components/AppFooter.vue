@@ -25,7 +25,8 @@
 <style scoped lang="scss">
 .footer {
   display: flex;
-  position: sticky;
+  position: fixed;
+  max-width: 480px;
   bottom: 0;
   justify-content: space-evenly;
   width: 100%;
@@ -33,6 +34,7 @@
   height: 4rem;
   background-color: $primary-color;
   color: $secondary-color;
+  z-index: 1;
 }
 
 a.no-style {

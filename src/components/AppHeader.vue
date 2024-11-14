@@ -14,5 +14,6 @@ header {
   font-size: 1.2rem;
   background-color: $primary-color;
   color: white;
+  z-index: 1;
 }
 </style>

@@ -30,7 +30,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .layout-container {
-  min-height: 100%;
+  min-height: 100vh;
   max-width: 480px;
   margin: 0 auto;
   background-color: white;
