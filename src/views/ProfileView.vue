@@ -109,9 +109,12 @@ const videos = ref([
 }
 
 .user-info-content {
+  display: flex;
+  align-items: center;
   background-color: colors.$primary-color;
+  height: 2rem;
   border-radius: 1rem;
-  padding: 0.5rem 1rem;
+  padding: 0rem 1rem;
 }
 
 .profile-btn-container {
@@ -126,6 +129,7 @@ const videos = ref([
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 2rem;
   width: 70%;
   background-color: colors.$secondary-color;
   color: white;
@@ -133,7 +137,6 @@ const videos = ref([
   font-family: inherit;
   font-size: inherit;
   border-radius: 1rem;
-  padding: 0.5rem 1rem;
   transition: background-color 0.3s ease;
   cursor: pointer;
 }
