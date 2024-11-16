@@ -12,7 +12,7 @@ header {
   align-items: center;
   height: 4rem;
   font-size: 1.2rem;
-  background-color: $primary-color;
+  background-color: colors.$primary-color;
   color: white;
   z-index: 1;
 }

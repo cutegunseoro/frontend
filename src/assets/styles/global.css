@@ -1,0 +1,10 @@
+@font-face {
+  font-family: 'Nanum Gothic';
+  src: url('@/assets/fonts/Pretendard-SemiBold.otf') format('opentype');
+}
+
+body {
+  margin: 0px;
+  font-family: 'Nanum Gothic', sans-serif;
+  font-size: 14px;
+}
