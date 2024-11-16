@@ -12,7 +12,8 @@ header {
   align-items: center;
   height: 4rem;
   font-size: 1.2rem;
-  background-color: colors.$primary-color;
+  box-sizing: border-box;
+  border-bottom: 1px solid #f0f0f0;
   color: white;
   z-index: 1;
 }
