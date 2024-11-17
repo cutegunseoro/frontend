@@ -1,7 +1,7 @@
 <template>
   <div class="video-container">
-    <video ref="videoElement" class="video-element"></video>
-    <CameraFooter @toggleCamera="toggleCamera" />
+    <video ref="videoElement" class="video-element" autoplay muted></video>
+    <CameraFooter @toggleCamera="toggleCamera" @toggleRecording="toggleRecording" />
   </div>
 </template>
 
@@ -10,19 +10,26 @@ import CameraFooter from '@/components/CameraFooter.vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 
 const videoElement = ref(null)
-const devices = ref([])
-const selectedDeviceId = ref('')
+const devices = ref([]) // 사용 가능한 카메라
+const selectedDeviceId = ref('') // 현재 사용 중인 카메라 ID
+
+const mediaStream = ref(null)
+const mediaRecorder = ref(null)
+
+const recordedChunks = ref([]) // 녹화된 동영상 조각
+const videoUrl = ref(null) //녹화 완료된 영상 URL
+const isRecording = ref(false) // 현재 녹화 중 여부
 
 onMounted(async () => {
   await listDevices()
-  await startCamera()
+  await setupCamera()
 })
 
 onBeforeUnmount(() => {
   stopCurrentStream()
 })
 
-const startCamera = async () => {
+const setupCamera = async () => {
   try {
     // 기존 스트림 종료
     stopCurrentStream()
@@ -32,22 +39,64 @@ const startCamera = async () => {
       video: { deviceId: selectedDeviceId.value ? { exact: selectedDeviceId.value } : undefined },
     })
 
-    if (videoElement.value) {
-      videoElement.value.srcObject = stream
-      videoElement.value.play()
-    }
+    mediaStream.value = stream
+    videoElement.value.srcObject = stream
   } catch (err) {
     console.log('Error starting camera:', err)
   }
 }
 
+const toggleRecording = () => {
+  if (isRecording.value) {
+    stopRecording()
+    return
+  }
+
+  startRecording()
+}
+
+const startRecording = () => {
+  mediaRecorder.value = new MediaRecorder(mediaStream.value)
+
+  mediaRecorder.value.ondataavailable = (event) => {
+    recordedChunks.value.push(event.data)
+  }
+
+  mediaRecorder.value.start()
+  isRecording.value = true
+  console.log('녹화 시작')
+}
+
+const stopRecording = () => {
+  mediaRecorder.value.stop()
+  isRecording.value = false
+
+  mediaRecorder.value.onstop = () => {
+    const blob = new Blob(recordedChunks.value, { type: 'video/webm' })
+    videoUrl.value = URL.createObjectURL(blob)
+    recordedChunks.value = []
+
+    // 녹화가 완료된 후 다운로드를 트리거
+    const a = document.createElement('a')
+    a.href = videoUrl.value
+    a.download = 'recording.webm'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+
+    console.log('녹화된 영상 다운로드 준비 완료')
+  }
+
+  console.log('녹화 끝')
+}
+
 const toggleCamera = async () => {
-  // 사용 가능한 카메라가 없는 경우
-  if (devices.value.length === 0) return
+  // 다른 카메라가 없는 경우
+  if (devices.value.length < 2) return
 
   const currentDevice = devices.value.find((device) => device.deviceId === selectedDeviceId.value)
 
-  // 현재 카메라가 전면 카메라인 경우 후면 카메라로, 아니면 전면 카메라로 변경
+  // 전 / 후면 카메라 전환
   const nextDevice = devices.value.find((device) => {
     const isFrontCamera = currentDevice.facingMode === 'user'
     return isFrontCamera ? device.facingMode === 'environment' : device.facingMode === 'user'
@@ -55,7 +104,7 @@ const toggleCamera = async () => {
 
   if (nextDevice) {
     selectedDeviceId.value = nextDevice.deviceId
-    await startCamera()
+    await setupCamera()
   }
 }
 
@@ -75,9 +124,8 @@ const listDevices = async () => {
 }
 
 const stopCurrentStream = () => {
-  const currentStream = videoElement.value?.srcObject
-  if (currentStream) {
-    const tracks = currentStream.getTracks()
+  if (mediaStream.value) {
+    const tracks = mediaStream.value.getTracks()
     tracks.forEach((track) => track.stop())
   }
 }

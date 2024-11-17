@@ -1,7 +1,12 @@
 <template>
   <div class="footer">
     <font-awesome-icon @click="goBack" class="camera-icon" size="lg" :icon="['fas', 'xmark']" />
-    <font-awesome-icon class="camera-icon" size="lg" :icon="['fas', 'record-vinyl']" />
+    <font-awesome-icon
+      @click="toggleRecording"
+      class="camera-icon"
+      size="lg"
+      :icon="['fas', 'record-vinyl']"
+    />
     <font-awesome-icon
       @click="toggleCamera"
       class="camera-icon"
@@ -15,7 +20,7 @@
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const emit = defineEmits(['toggleCamera'])
+const emit = defineEmits(['toggleCamera', 'toggleRecording'])
 
 const goBack = () => {
   router.go(-1)
@@ -23,6 +28,10 @@ const goBack = () => {
 
 const toggleCamera = () => {
   emit('toggleCamera')
+}
+
+const toggleRecording = () => {
+  emit('toggleRecording')
 }
 </script>
 
