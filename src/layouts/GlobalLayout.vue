@@ -1,6 +1,6 @@
 <template>
   <div :class="isMobile ? '' : 'layout-container'">
-    <AppHeader />
+    <AppHeader v-if="!isRecordView" />
     <slot></slot>
     <AppFooter />
   </div>
@@ -9,9 +9,13 @@
 <script setup>
 import AppHeader from '@/components/AppHeader.vue'
 import AppFooter from '@/components/AppFooter.vue'
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 const isMobile = ref(false)
+
+const isRecordView = computed(() => route.path === '/record')
 
 const handleResize = () => {
   isMobile.value = window.innerWidth <= 480

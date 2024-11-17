@@ -34,7 +34,7 @@ header {
   font-size: 1rem;
   box-sizing: border-box;
   padding: 2rem;
-  border-bottom: 1px solid #f0f0f0;
+  /* border-bottom: 1px solid #f0f0f0; */
   z-index: 1;
 }
 
