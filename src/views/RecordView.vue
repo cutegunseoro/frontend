@@ -1,6 +1,6 @@
 <template>
   <div class="video-container">
-    <video ref="videoElement" class="video-element" autoplay muted></video>
+    <video ref="videoElement" class="video-element" autoplay muted playsinline></video>
     <CameraFooter @toggleCamera="toggleCamera" @toggleRecording="toggleRecording" />
   </div>
 </template>
