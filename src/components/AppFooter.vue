@@ -43,17 +43,26 @@
   font-size: 0.6rem;
 }
 
+a {
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+a:hover {
+  color: colors.$icon-color-active;
+  transform: scale(1.1);
+}
+
+a:active {
+  transform: scale(0.9);
+}
+
 a.no-style {
   text-decoration: none;
   color: inherit; /* 기본 색상 상속 */
-  text-align: center;
 }
 
 a.router-link-active {
   color: colors.$icon-color-active; /* 활성화된 링크의 색상 */
-}
-
-a.no-style:hover {
-  color: colors.$icon-color-active;
 }
 </style>

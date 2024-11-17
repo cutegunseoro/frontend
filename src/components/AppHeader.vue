@@ -55,4 +55,8 @@ a.no-style {
 .header-icon:hover {
   transform: scale(1.2);
 }
+
+.header-icon:active {
+  transform: scale(0.9);
+}
 </style>
