@@ -2,7 +2,7 @@
   <div :class="isMobile ? '' : 'layout-container'">
     <AppHeader v-if="!isRecordView" />
     <slot></slot>
-    <AppFooter />
+    <AppFooter v-if="!isRecordView" />
   </div>
 </template>
 
