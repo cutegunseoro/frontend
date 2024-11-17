@@ -1,21 +1,29 @@
 <template>
   <header>
     <div>
-      <router-link class="no-style">
+      <div @click="goBack">
         <font-awesome-icon class="header-icon" size="lg" :icon="['fas', 'angle-left']" />
-      </router-link>
+      </div>
     </div>
     <div class="header-right">
-      <router-link class="no-style">
+      <router-link to="/" class="no-style">
         <font-awesome-icon class="header-icon" size="lg" :icon="['fas', 'bell']" />
       </router-link>
-      <router-link class="no-style">
+      <router-link to="/" class="no-style">
         <font-awesome-icon class="header-icon" size="lg" :icon="['fas', 'gear']" />
       </router-link>
     </div>
   </header>
 </template>
-<script setup></script>
+<script setup>
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const goBack = () => {
+  router.go(-1)
+}
+</script>
 <style scoped lang="scss">
 header {
   display: flex;
