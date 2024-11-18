@@ -5,6 +5,7 @@
       @click="toggleRecording"
       class="camera-icon"
       size="lg"
+      :color="props.isRecording ? 'red' : 'white'"
       :icon="['fas', 'record-vinyl']"
     />
     <font-awesome-icon
@@ -20,6 +21,9 @@
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+
+const props = defineProps({ isRecording: Boolean })
+
 const emit = defineEmits(['toggleCamera', 'toggleRecording'])
 
 const goBack = () => {

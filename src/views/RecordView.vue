@@ -1,7 +1,11 @@
 <template>
   <div class="video-container">
     <video ref="videoElement" class="video-element" autoplay muted playsinline></video>
-    <CameraFooter @toggleCamera="toggleCamera" @toggleRecording="toggleRecording" />
+    <CameraFooter
+      :isRecording="isRecording"
+      @toggleCamera="toggleCamera"
+      @toggleRecording="toggleRecording"
+    />
   </div>
 </template>
 

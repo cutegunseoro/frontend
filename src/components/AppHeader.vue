@@ -49,6 +49,7 @@ a.no-style {
 }
 
 .header-icon {
+  cursor: pointer;
   transition: transform 0.3s ease;
 }
 
