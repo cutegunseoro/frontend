@@ -3,16 +3,16 @@
     <header>Sign Up</header>
     <div class="login-input-container">
       <label for="loginId">아이디</label>
-      <input type="text" id="loginId" v-model.trim="loginId" />
+      <input type="text" id="loginId" v-model.trim="loginId" required />
 
       <label for="password">비밀번호</label>
-      <input type="password" id="password" v-model="password" />
+      <input type="password" id="password" v-model="password" required />
 
       <label for="passwordConfirm">비밀번호 확인</label>
-      <input type="password" id="passwordConfirm" v-model="passwordConfirm" />
+      <input type="password" id="passwordConfirm" v-model="passwordConfirm" required />
 
       <label for="publicId">핸들</label>
-      <input type="text" id="publicId" v-model.trim="publicId" />
+      <input type="text" id="publicId" v-model.trim="publicId" required />
     </div>
     <div class="error-message">{{ errorMessage }}</div>
     <button class="login-btn" @click="handleRegist">회원가입</button>
@@ -24,12 +24,43 @@ import { ref } from 'vue'
 const loginId = ref('')
 const password = ref('')
 const passwordConfirm = ref('')
-const publicId = ref('@')
+const publicId = ref('')
 const errorMessage = ref('')
 
+const idRegExp = /^[A-Za-z0-9]{8,}$/
+const pwRegExp = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/
+const handleRegExp = /^[A-Za-z0-9]{4,}$/
+
 const handleRegist = () => {
-  errorMessage.value = '아직 구현 안함 🥲'
+  if (isValidForm()) {
+    errorMessage.value = '회원가입 유효성 검사 통과'
+  }
 }
+
+const isValidForm = () => {
+  if (!idRegExp.test(loginId.value)) {
+    errorMessage.value = '아이디는 8자 이상이어야 합니다.'
+    return false
+  } else if (!pwRegExp.test(password.value)) {
+    errorMessage.value = '비밀번호는 영문, 숫자, 특수문자(!@#$%^&*)을 포함하여 8자 이상이어야 합니다.'
+    return false
+  } else if (password.value !== passwordConfirm.value) {
+    errorMessage.value = '비밀번호 확인이 일치하지 않습니다.'
+    return false
+  } else if (!handleRegExp.test(publicId.value)) {
+    errorMessage.value = '핸들은 4자 이상이어야 합니다.'
+    return false
+  }
+
+  return true
+}
+
+// 모든 input은 채워져 있어야 함
+// 비밀번호, 비밀번호 확인 일치해야 함
+// 아이디와 비밀번호는 8자리 이상, 아이디는 영문, 숫자 사용 가능, 비밀번호는 영문, 숫자, 일부 특수문자 반드시 1글자 이상 포함
+// (id: /^[A-Za-z0-9]{8,}$/, pw : /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/)
+
+// 중복 검사는 서버에서
 </script>
 
 <style scoped lang="scss">

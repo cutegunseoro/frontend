@@ -43,7 +43,7 @@ import { ref } from 'vue'
 
 const user = ref({
   name: '거니',
-  bio: '인생은 동영상이다..💭',
+  bio: '인생은 동영상이다..',
   travelStyle: '활동적인',
 })
 
