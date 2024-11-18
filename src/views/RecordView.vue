@@ -1,6 +1,7 @@
 <template>
   <div class="video-container">
     <video ref="videoElement" class="video-element" autoplay muted playsinline></video>
+    <div style="color: red; z-index: 100">{{ debugMsg }}</div>
     <CameraFooter
       :isRecording="isRecording"
       @toggleCamera="toggleCamera"
@@ -23,6 +24,8 @@ const mediaRecorder = ref(null)
 const recordedChunks = ref([]) // 녹화된 동영상 조각
 const videoUrl = ref(null) //녹화 완료된 영상 URL
 const isRecording = ref(false) // 현재 녹화 중 여부
+
+const debugMsg = ref('디버깅용')
 
 onMounted(async () => {
   await listDevices()
@@ -98,6 +101,8 @@ const toggleCamera = async () => {
   // 다른 카메라가 없는 경우
   if (devices.value.length < 2) return
 
+  debugMsg.value = '다른 카메라 있음'
+
   const currentDevice = devices.value.find((device) => device.deviceId === selectedDeviceId.value)
 
   // 전 / 후면 카메라 전환
@@ -118,15 +123,8 @@ const listDevices = async () => {
     const allDevices = await navigator.mediaDevices.enumerateDevices()
     devices.value = allDevices.filter((device) => device.kind === 'videoinput')
 
-    const rearCamera = devices.value.find(
-      (device) =>
-        device.label.toLowerCase().includes('back') || device.facingMode === 'environment',
-    )
-
-    if (rearCamera) {
-      selectedDeviceId.value = rearCamera.deviceId
-    } else {
-      // 후면 카메라가 없을 경우 첫 번째 카메라 선택
+    if (devices.value.length > 0) {
+      // 기본 카메라 선택
       selectedDeviceId.value = devices.value[0].deviceId
     }
   } catch (err) {
