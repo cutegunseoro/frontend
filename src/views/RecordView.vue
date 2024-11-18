@@ -44,6 +44,7 @@ const setupCamera = async () => {
     // 새로운 스트림 시작
     const stream = await navigator.mediaDevices.getUserMedia({
       video: { deviceId: selectedDeviceId.value ? { exact: selectedDeviceId.value } : undefined },
+      audio: true,
     })
 
     mediaStream.value = stream
@@ -101,8 +102,6 @@ const toggleCamera = async () => {
   // 다른 카메라가 없는 경우
   if (devices.value.length < 2) return
 
-  debugMsg.value = '다른 카메라 있음'
-
   const currentDevice = devices.value.find((device) => device.deviceId === selectedDeviceId.value)
 
   // 전 / 후면 카메라 전환
@@ -127,6 +126,11 @@ const listDevices = async () => {
       // 기본 카메라 선택
       selectedDeviceId.value = devices.value[0].deviceId
     }
+
+    // 디버그 메시지에 사용 가능한 카메라 정보 표시
+    debugMsg.value = devices.value
+      .map((device, index) => `${index + 1}: ${device.label || 'Unknown Camera'}`)
+      .join('\n')
   } catch (err) {
     console.log('Error listing devices:', err)
   }
