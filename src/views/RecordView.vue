@@ -118,8 +118,15 @@ const listDevices = async () => {
     const allDevices = await navigator.mediaDevices.enumerateDevices()
     devices.value = allDevices.filter((device) => device.kind === 'videoinput')
 
-    if (devices.value.length > 0) {
-      // 기본 카메라 선택
+    const rearCamera = devices.value.find(
+      (device) =>
+        device.label.toLowerCase().includes('back') || device.facingMode === 'environment',
+    )
+
+    if (rearCamera) {
+      selectedDeviceId.value = rearCamera.deviceId
+    } else {
+      // 후면 카메라가 없을 경우 첫 번째 카메라 선택
       selectedDeviceId.value = devices.value[0].deviceId
     }
   } catch (err) {
