@@ -119,6 +119,9 @@ const toggleCamera = async () => {
 // 사용 가능한 카메라 리스트 업
 const listDevices = async () => {
   try {
+    // 카메라 권한을 먼저 요청
+    await navigator.mediaDevices.getUserMedia({ video: true })
+
     const allDevices = await navigator.mediaDevices.enumerateDevices()
     devices.value = allDevices.filter((device) => device.kind === 'videoinput')
 
