@@ -1,33 +1,34 @@
 <template>
   <div class="login-view">
-    <header>Sign In</header>
+    <header>Sign Up</header>
     <div class="login-input-container">
       <label for="loginId">아이디</label>
       <input type="text" id="loginId" v-model.trim="loginId" />
+
       <label for="password">비밀번호</label>
       <input type="password" id="password" v-model="password" />
+
+      <label for="passwordConfirm">비밀번호 확인</label>
+      <input type="password" id="passwordConfirm" v-model="passwordConfirm" />
+
+      <label for="publicId">핸들</label>
+      <input type="text" id="publicId" v-model.trim="publicId" />
     </div>
     <div class="error-message">{{ errorMessage }}</div>
-    <button class="login-btn" @click="handleLogin">로그인</button>
+    <button class="login-btn" @click="handleRegist">회원가입</button>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 const loginId = ref('')
 const password = ref('')
+const passwordConfirm = ref('')
+const publicId = ref('@')
 const errorMessage = ref('')
 
-const isFormValid = computed(() => loginId.value !== '' && password.value !== '')
-
-const handleLogin = () => {
-  if (isFormValid.value) {
-    errorMessage.value = ''
-    // 로그인 시도
-    errorMessage.value = '아이디 또는 비밀번호가 잘못되었습니다 🥲'
-  } else {
-    errorMessage.value = '아이디 또는 비밀번호를 입력해 주세요 🔒'
-  }
+const handleRegist = () => {
+  errorMessage.value = '아직 구현 안함 🥲'
 }
 </script>
 
