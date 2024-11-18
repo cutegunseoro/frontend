@@ -143,7 +143,7 @@ const videos = ref([
 }
 
 .profile-btn:hover {
-  background-color: colors.$icon-color-active;
+  background-color: colors.$highlight-color;
 }
 
 .video-container {

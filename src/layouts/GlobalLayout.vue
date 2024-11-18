@@ -1,8 +1,8 @@
 <template>
   <div :class="isMobile ? '' : 'layout-container'">
-    <AppHeader v-if="!isRecordView" />
+    <AppHeader v-if="!(isRecordView || isAuthView)" />
     <slot></slot>
-    <AppFooter v-if="!isRecordView" />
+    <AppFooter v-if="!(isRecordView || isAuthView)" />
   </div>
 </template>
 
@@ -16,6 +16,7 @@ const route = useRoute()
 const isMobile = ref(false)
 
 const isRecordView = computed(() => route.path === '/record')
+const isAuthView = computed(() => ['/login', '/regist'].includes(route.path))
 
 const handleResize = () => {
   isMobile.value = window.innerWidth <= 480

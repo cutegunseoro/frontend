@@ -49,7 +49,7 @@ a {
 }
 
 a:hover {
-  color: colors.$icon-color-active;
+  color: colors.$highlight-color;
   transform: scale(1.1);
 }
 
@@ -63,6 +63,6 @@ a.no-style {
 }
 
 a.router-link-active {
-  color: colors.$icon-color-active; /* 활성화된 링크의 색상 */
+  color: colors.$highlight-color; /* 활성화된 링크의 색상 */
 }
 </style>
