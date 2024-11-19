@@ -4,9 +4,7 @@
       <div @click="goBack">
         <font-awesome-icon class="header-icon" size="lg" :icon="['fas', 'angle-left']" />
       </div>
-      <div>
-        Sign Up
-      </div>
+      <div>Sign Up</div>
     </header>
     <div class="login-input-container">
       <label for="loginId">아이디</label>
@@ -56,7 +54,8 @@ const isValidForm = () => {
     errorMessage.value = '아이디는 8자 이상이어야 합니다.'
     return false
   } else if (!pwRegExp.test(password.value)) {
-    errorMessage.value = '비밀번호는 영문, 숫자, 특수문자(!@#$%^&*)을 포함하여 8자 이상이어야 합니다.'
+    errorMessage.value =
+      '비밀번호는 영문, 숫자, 특수문자(!@#$%^&*)을 포함하여 8자 이상이어야 합니다.'
     return false
   } else if (password.value !== passwordConfirm.value) {
     errorMessage.value = '비밀번호 확인이 일치하지 않습니다.'

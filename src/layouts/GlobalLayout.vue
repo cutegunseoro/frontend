@@ -1,6 +1,6 @@
 <template>
   <div :class="isMobile ? '' : 'layout-container'">
-    <AppHeader v-if="!(isIntroView || isRecordView || isAuthView)" />
+    <AppHeader v-if="!(isIntroView || isRecordView || isAuthView || isHomeView)" />
     <slot></slot>
     <AppFooter v-if="!(isIntroView || isRecordView || isAuthView)" />
   </div>
@@ -17,6 +17,7 @@ const isMobile = ref(false)
 
 const isRecordView = computed(() => route.path === '/record')
 const isIntroView = computed(() => route.path === '/')
+const isHomeView = computed(() => route.path === '/home')
 const isAuthView = computed(() => ['/login', '/regist'].includes(route.path))
 
 const handleResize = () => {
@@ -44,5 +45,7 @@ onBeforeUnmount(() => {
   align-items: center;
   border-left: 1px solid #f0f0f0;
   border-right: 1px solid #f0f0f0;
+  box-sizing: content-box;
+  overflow: hidden;
 }
 </style>

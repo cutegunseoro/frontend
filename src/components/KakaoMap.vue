@@ -1,15 +1,28 @@
 <template>
   <div class="home-view">
-    <div ref="mapContainer" style="width: 100%; height: 40vh; position: relative;"></div>
+    <div ref="mapContainer" style="width: 100%; height: 100vh; position: relative"></div>
 
-    <div class="search-container">
+    <div class="search-container" :class="{ open: isSearchOpen }">
       <div class="search-input-container">
         <input v-model.trim="keyword" @keydown.enter="handleSearchIconClick" />
-        <font-awesome-icon class="search-icon" size="lg" :icon="['fas', 'magnifying-glass']" @click="handleSearchIconClick" />
+        <font-awesome-icon
+          class="search-icon"
+          size="lg"
+          :icon="['fas', 'magnifying-glass']"
+          @click="handleSearchIconClick"
+        />
       </div>
       <div class="search-result-container">
         <div class="search-result-list">
-          <div class="search-result-item" v-for="place in searchedPlaces" :key="place.id">{{ place.place_name }}</div>
+          <div
+            class="search-result-item"
+            v-for="place in searchedPlaces"
+            :key="place.id"
+            @click="handleSearchedPlaceClick(place)"
+          >
+            <div>{{ place.place_name }}</div>
+            <div>{{ place.road_address_name }}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -27,10 +40,18 @@ const mapContainer = ref(null)
 let mapInstance = null // 지도 인스턴스 저장
 let markers = [] // 마커들을 저장할 배열
 
+const isSearchOpen = ref(false)
+
 const handleSearchIconClick = () => {
   if (keyword.value) {
     searchPlaces(keyword.value)
+    isSearchOpen.value = true
   }
+}
+
+const handleSearchedPlaceClick = (place) => {
+  isSearchOpen.value = false
+  addMarker(place)
 }
 
 const getUserCoord = () => {
@@ -44,7 +65,7 @@ const getUserCoord = () => {
       },
       (err) => {
         reject(err)
-      }
+      },
     )
   })
 }
@@ -75,9 +96,25 @@ const loadKakaoMap = (container, lat = 37.501311, lng = 127.039604) => {
   }
 }
 
+const addMarker = (place) => {
+  removeMarkers()
+
+  const position = new window.kakao.maps.LatLng(place.y, place.x)
+
+  const marker = new window.kakao.maps.Marker({
+    position: position,
+  })
+
+  marker.setMap(mapInstance)
+  markers.push(marker)
+
+  // 지도의 중심을 마커 위치로 이동
+  mapInstance.setCenter(position)
+}
+
 // 기존에 있던 마커들 제거
 const removeMarkers = () => {
-  markers.forEach(marker => marker.setMap(null))
+  markers.forEach((marker) => marker.setMap(null))
   markers = []
 }
 
@@ -87,34 +124,16 @@ const searchPlaces = (keyword) => {
 
   const ps = new window.kakao.maps.services.Places()
 
-  // 기존에 있던 마커들 제거
-  removeMarkers()
-
   ps.keywordSearch(keyword, (data, status) => {
     if (status === window.kakao.maps.services.Status.OK) {
-      const bounds = new window.kakao.maps.LatLngBounds()
       searchedPlaces.value = []
 
-      // 검색된 장소들에 대해 마커 추가
       data.forEach((place) => {
-        const position = new window.kakao.maps.LatLng(place.y, place.x)
-
-        const marker = new window.kakao.maps.Marker({
-          position: position,
-        })
-
-        marker.setMap(mapInstance)
-        markers.push(marker)
-
-        bounds.extend(position)
-
         searchedPlaces.value.push(place)
 
         // 검색된 장소의 이름을 콘솔에 출력
         console.log(place)
       })
-
-      mapInstance.setBounds(bounds)
     } else {
       console.error('장소 검색에 실패했습니다.')
     }
@@ -140,11 +159,20 @@ onMounted(async () => {
 </script>
 <style scoped lang="scss">
 .home-view {
+  position: relative;
   width: 100%;
 }
 
 .search-container {
+  position: absolute;
+  bottom: 4rem;
   width: 100%;
+  z-index: 1;
+  transition: transform 0.6s ease-in-out;
+
+  &.open {
+    transform: translateY(-80vh);
+  }
 }
 
 .search-input-container {
@@ -152,7 +180,6 @@ onMounted(async () => {
   justify-content: center;
   align-items: center;
   height: 3rem;
-  width: 100%;
   background-color: colors.$primary-color;
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
@@ -178,14 +205,23 @@ input:focus {
 }
 
 .search-result-container {
-
+  position: absolute;
+  width: 100%;
+  height: 80vh;
+  background-color: white;
 }
 
 .search-result-list {
   overflow-y: auto;
+  max-height: 80vh;
 }
 
 .search-result-item {
-  // height: 3rem;
+  display: flex;
+  align-items: center;
+  height: 4rem;
+  padding: 1rem;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
 }
 </style>

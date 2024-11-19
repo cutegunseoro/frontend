@@ -28,7 +28,6 @@ const goToRegist = () => {
 const goToHome = () => {
   router.replace('/home')
 }
-
 </script>
 
 <style scoped lang="scss">
@@ -39,7 +38,7 @@ const goToHome = () => {
   align-items: center;
   height: 100vh;
   width: 100%;
- background-color: colors.$primary-color;
+  background-color: colors.$primary-color;
 }
 
 img {
@@ -115,5 +114,4 @@ img {
     transform: rotate(4deg);
   }
 }
-
 </style>
