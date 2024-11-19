@@ -4,8 +4,8 @@
     <div style="color: red; z-index: 100">{{ debugMsg }}</div>
     <CameraFooter
       :isRecording="isRecording"
-      @toggleCamera="toggleCamera"
-      @toggleRecording="toggleRecording"
+      @toggle-camera="toggleCamera"
+      @toggle-recording="toggleRecording"
     />
   </div>
 </template>
