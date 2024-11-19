@@ -1,8 +1,9 @@
 <template>
-  <div ref="mapContainer" style="width: 100%; height: 100vh"></div>
-  <div class="search-container">
-    <input v-model.trim="keyword"/>
-    <font-awesome-icon class="search-icon" size="lg" :icon="['fas', 'magnifying-glass']" @click="handleSearchIconClick" />
+  <div ref="mapContainer" style="width: 100%; height: 100vh; position: relative;">
+    <div class="search-container">
+      <input v-model.trim="keyword" @keydown.enter="handleSearchIconClick" />
+      <font-awesome-icon class="search-icon" size="lg" :icon="['fas', 'magnifying-glass']" @click="handleSearchIconClick" />
+    </div>
   </div>
 </template>
 <script setup>
@@ -50,7 +51,6 @@ const loadKakaoMap = (container, lat = 37.501311, lng = 127.039604) => {
         level: 3,
       }
 
-      // 맵 인스턴스 생성
       mapInstance = new window.kakao.maps.Map(container, options)
 
       // 사용자 위치 마커 추가
@@ -65,6 +65,12 @@ const loadKakaoMap = (container, lat = 37.501311, lng = 127.039604) => {
   }
 }
 
+// 기존에 있던 마커들 제거
+const removeMarkers = () => {
+  markers.forEach(marker => marker.setMap(null))
+  markers = []
+}
+
 // 장소 검색 함수
 const searchPlaces = (keyword) => {
   if (!mapInstance) return
@@ -72,8 +78,7 @@ const searchPlaces = (keyword) => {
   const ps = new window.kakao.maps.services.Places()
 
   // 기존에 있던 마커들 제거
-  markers.forEach(marker => marker.setMap(null))
-  markers = []
+  removeMarkers()
 
   ps.keywordSearch(keyword, (data, status) => {
     if (status === window.kakao.maps.services.Status.OK) {
@@ -122,14 +127,18 @@ onMounted(async () => {
 </script>
 <style scoped lang="scss">
 .search-container {
+  position: absolute;
+  bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 6rem;
+  height: 3rem;
   width: 100%;
   background-color: colors.$primary-color;
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
+  cursor: pointer;
+  z-index: 100;
 }
 
 input {
