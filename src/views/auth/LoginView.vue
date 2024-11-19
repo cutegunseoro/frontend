@@ -1,6 +1,11 @@
 <template>
   <div class="login-view">
-    <header>Sign In</header>
+    <header>
+      <div @click="goBack">
+        <font-awesome-icon class="header-icon" size="lg" :icon="['fas', 'angle-left']" />
+      </div>
+      <div>Sign In</div>
+    </header>
     <div class="login-input-container">
       <label for="loginId">아이디</label>
       <input type="text" id="loginId" v-model.trim="loginId" />
@@ -14,6 +19,13 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const goBack = () => {
+  router.go(-1)
+}
 const loginId = ref('')
 const password = ref('')
 const errorMessage = ref('')
@@ -81,6 +93,7 @@ header {
   position: fixed;
   top: 0;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   max-width: 480px;
   width: 100%;
@@ -91,6 +104,15 @@ header {
   color: colors.$highlight-color;
   box-sizing: border-box;
   z-index: 1;
+}
+
+.header-icon {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.header-icon:hover {
+  transform: scale(1.2);
 }
 
 input {

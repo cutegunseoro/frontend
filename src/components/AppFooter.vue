@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    <router-link to="/" class="no-style">
+    <router-link to="/home" class="no-style">
       <font-awesome-icon size="lg" :icon="['fas', 'home']" />
       <div class="footer-text">home</div>
     </router-link>
