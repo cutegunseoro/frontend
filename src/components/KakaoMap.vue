@@ -1,8 +1,17 @@
 <template>
-  <div ref="mapContainer" style="width: 100%; height: 100vh; position: relative;">
+  <div class="home-view">
+    <div ref="mapContainer" style="width: 100%; height: 40vh; position: relative;"></div>
+
     <div class="search-container">
-      <input v-model.trim="keyword" @keydown.enter="handleSearchIconClick" />
-      <font-awesome-icon class="search-icon" size="lg" :icon="['fas', 'magnifying-glass']" @click="handleSearchIconClick" />
+      <div class="search-input-container">
+        <input v-model.trim="keyword" @keydown.enter="handleSearchIconClick" />
+        <font-awesome-icon class="search-icon" size="lg" :icon="['fas', 'magnifying-glass']" @click="handleSearchIconClick" />
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-list">
+          <div class="search-result-item" v-for="place in searchedPlaces" :key="place.id">{{ place.place_name }}</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -12,6 +21,7 @@ import { ref, onMounted } from 'vue'
 const { VITE_KAKAO_MAP_KEY } = import.meta.env
 
 const keyword = ref('')
+const searchedPlaces = ref([])
 const mapContainer = ref(null)
 
 let mapInstance = null // 지도 인스턴스 저장
@@ -83,6 +93,7 @@ const searchPlaces = (keyword) => {
   ps.keywordSearch(keyword, (data, status) => {
     if (status === window.kakao.maps.services.Status.OK) {
       const bounds = new window.kakao.maps.LatLngBounds()
+      searchedPlaces.value = []
 
       // 검색된 장소들에 대해 마커 추가
       data.forEach((place) => {
@@ -97,8 +108,10 @@ const searchPlaces = (keyword) => {
 
         bounds.extend(position)
 
+        searchedPlaces.value.push(place)
+
         // 검색된 장소의 이름을 콘솔에 출력
-        console.log(place.place_name)
+        console.log(place)
       })
 
       mapInstance.setBounds(bounds)
@@ -126,9 +139,15 @@ onMounted(async () => {
 })
 </script>
 <style scoped lang="scss">
+.home-view {
+  width: 100%;
+}
+
 .search-container {
-  position: absolute;
-  bottom: 0;
+  width: 100%;
+}
+
+.search-input-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -138,7 +157,6 @@ onMounted(async () => {
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
   cursor: pointer;
-  z-index: 100;
 }
 
 input {
@@ -157,5 +175,17 @@ input:focus {
 .search-icon {
   color: colors.$highlight-color;
   cursor: pointer;
+}
+
+.search-result-container {
+
+}
+
+.search-result-list {
+  overflow-y: auto;
+}
+
+.search-result-item {
+  // height: 3rem;
 }
 </style>

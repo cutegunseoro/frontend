@@ -1,7 +1,7 @@
 <template>
   <div class="home-view">
     <KakaoMap :keyword="keyword" />
-    <VideoBox />
+    <!-- <VideoBox /> -->
   </div>
 </template>
 
