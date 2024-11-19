@@ -171,7 +171,7 @@ onMounted(async () => {
   transition: transform 0.6s ease-in-out;
 
   &.open {
-    transform: translateY(-80vh);
+    transform: translateY(-40vh);
   }
 }
 
@@ -207,13 +207,13 @@ input:focus {
 .search-result-container {
   position: absolute;
   width: 100%;
-  height: 80vh;
+  height: 40vh;
   background-color: white;
 }
 
 .search-result-list {
   overflow-y: auto;
-  max-height: 80vh;
+  max-height: 40vh;
 }
 
 .search-result-item {
