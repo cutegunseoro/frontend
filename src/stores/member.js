@@ -3,8 +3,17 @@ import { defineStore } from 'pinia'
 import { memberConfirm, memberRegist } from '@/api/member'
 
 export const useMemberStore = defineStore('member', () => {
-  const memberInfo = ref(null)
-  const isLoggedIn = ref(false) // 현재 로그인 상태
+  // 기본 값
+  const memberInfo = ref({
+    loginId: "gwonhong",
+    publicId: "kirby",
+    name: '거니',
+    bio: '인생은 동영상이다..',
+    travelStyle: '활동적인',
+  })
+
+  // 현재 로그인 상태
+  const isLoggedIn = ref(false)
 
   const login = async (loginId, password) => {
     const param = { loginId, password }
