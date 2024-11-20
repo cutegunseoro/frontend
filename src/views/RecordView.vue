@@ -13,6 +13,9 @@
 <script setup>
 import CameraFooter from '@/components/CameraFooter.vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const videoElement = ref(null)
 const devices = ref([]) // 사용 가능한 카메라
@@ -84,15 +87,8 @@ const stopRecording = () => {
     videoUrl.value = URL.createObjectURL(blob)
     recordedChunks.value = []
 
-    // 녹화가 완료된 후 다운로드를 트리거
-    const a = document.createElement('a')
-    a.href = videoUrl.value
-    a.download = 'recording.webm'
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-
-    console.log('녹화된 영상 다운로드 준비 완료')
+    // 녹화가 완료되면 비디오 다시 재생
+    router.push({ name: 'playback', query: { videoUrl: videoUrl.value } })
   }
 
   console.log('녹화 끝')

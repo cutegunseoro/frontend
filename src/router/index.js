@@ -6,6 +6,7 @@ import CalendarView from '@/views/CalendarView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import LoginView from '@/views/auth/LoginView.vue'
 import RegistView from '@/views/auth/RegistView.vue'
+import PlaybackView from '@/views/PlaybackView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,6 +52,12 @@ const router = createRouter({
       name: "regist",
       component: RegistView,
     },
+
+    {
+      path: "/playback",
+      name: "playback",
+      component: PlaybackView
+    }
 
   ],
 })

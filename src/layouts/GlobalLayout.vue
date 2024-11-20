@@ -15,7 +15,7 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 const isMobile = ref(false)
 
-const isRecordView = computed(() => route.path === '/record')
+const isRecordView = computed(() => ['/record', '/playback'].includes(route.path))
 const isIntroView = computed(() => route.path === '/')
 const isHomeView = computed(() => route.path === '/home')
 const isAuthView = computed(() => ['/login', '/regist'].includes(route.path))
