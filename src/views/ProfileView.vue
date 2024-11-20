@@ -37,12 +37,12 @@ import defaultImage from '@/assets/images/kirby_okxooxoo.png'
 import VideoBox from '@/components/VideoBox.vue'
 
 import { ref } from 'vue'
+import { useMemberStore } from '@/stores/member'
 
-const user = ref({
-  name: '거니',
-  bio: '인생은 동영상이다..',
-  travelStyle: '활동적인',
-})
+const memberStore = useMemberStore()
+
+const user = ref(memberStore.memberInfo)
+
 </script>
 
 <style scoped lang="scss">

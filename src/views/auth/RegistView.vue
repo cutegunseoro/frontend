@@ -17,7 +17,7 @@
       <input type="password" id="passwordConfirm" v-model="passwordConfirm" required />
 
       <label for="publicId">핸들</label>
-      <input type="text" id="publicId" v-model.trim="publicId" required />
+      <input type="text" id="publicId" v-model.trim="publicId" required @keydown.enter="handleRegist" />
     </div>
     <div class="error-message">{{ errorMessage }}</div>
     <button class="login-btn" @click="handleRegist">회원가입</button>
@@ -27,8 +27,10 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useMemberStore } from '@/stores/member'
 
 const router = useRouter()
+const memberStore = useMemberStore()
 
 const goBack = () => {
   router.go(-1)
@@ -43,9 +45,17 @@ const idRegExp = /^[A-Za-z0-9]{8,}$/
 const pwRegExp = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/
 const handleRegExp = /^[A-Za-z0-9]{4,}$/
 
-const handleRegist = () => {
+const handleRegist = async () => {
   if (isValidForm()) {
-    errorMessage.value = '회원가입 유효성 검사 통과'
+    try {
+      await memberStore.regist(loginId.value, password.value, publicId.value)
+
+      alert('정상적으로 회원가입 되었습니다!')
+      router.replace('/login')
+    } catch (err) {
+      errorMessage.value = err.message
+      console.log(err)
+    }
   }
 }
 
@@ -55,7 +65,7 @@ const isValidForm = () => {
     return false
   } else if (!pwRegExp.test(password.value)) {
     errorMessage.value =
-      '비밀번호는 영문, 숫자, 특수문자(!@#$%^&*)을 포함하여 8자 이상이어야 합니다.'
+      '비밀번호는 영문, 숫자, 특수문자(!@#$%^&*)를 포함하여 8자 이상이어야 합니다.'
     return false
   } else if (password.value !== passwordConfirm.value) {
     errorMessage.value = '비밀번호 확인이 일치하지 않습니다.'
