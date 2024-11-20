@@ -20,6 +20,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const router = useRouter()
 
@@ -32,11 +33,27 @@ const errorMessage = ref('')
 
 const isFormValid = computed(() => loginId.value !== '' && password.value !== '')
 
-const handleLogin = () => {
+const handleLogin = async () => {
   if (isFormValid.value) {
     errorMessage.value = ''
     // 로그인 시도
-    errorMessage.value = '아이디 또는 비밀번호가 잘못되었습니다 🥲'
+    try {
+      const response = await axios.post('login URL...', {
+        loginId: loginId.value,
+        password: password.value,
+      })
+
+      if (response.data.success) {
+        // 로그인 성공하면
+        router.replace('/home')
+      } else {
+        // 로그인 실패하면
+        errorMessage.value = '아이디 또는 비밀번호가 잘못되었습니다 🥲'
+      }
+    } catch (err) {
+      errorMessage.value = '서버 요청에 실패했습니다. 다시 시도해 주세요.'
+      console.error(err)
+    }
   } else {
     errorMessage.value = '아이디 또는 비밀번호를 입력해 주세요 🔒'
   }

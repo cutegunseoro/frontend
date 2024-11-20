@@ -55,7 +55,7 @@ const handleRegist = async () => {
 
       if (response.data.success) {
         alert('회원가입 성공')
-        router.push('/login')
+        router.replace('/login')
       } else {
         errorMessage.value = response.data.message
           || '알 수 없는 오류가 발생했습니다. 잠시 뒤에 시도해주세요.'
