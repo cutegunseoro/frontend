@@ -10,7 +10,7 @@
       <label for="loginId">아이디</label>
       <input type="text" id="loginId" v-model.trim="loginId" />
       <label for="password">비밀번호</label>
-      <input type="password" id="password" v-model="password" />
+      <input type="password" id="password" v-model="password" @keydown.enter="handleLogin" />
     </div>
     <div class="error-message">{{ errorMessage }}</div>
     <button class="login-btn" @click="handleLogin">로그인</button>
@@ -20,9 +20,10 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios'
+import { useMemberStore } from '@/stores/member'
 
 const router = useRouter()
+const memberStore = useMemberStore()
 
 const goBack = () => {
   router.go(-1)
@@ -35,23 +36,14 @@ const isFormValid = computed(() => loginId.value !== '' && password.value !== ''
 
 const handleLogin = async () => {
   if (isFormValid.value) {
-    errorMessage.value = ''
-    // 로그인 시도
     try {
-      const response = await axios.post('login URL...', {
-        loginId: loginId.value,
-        password: password.value,
-      })
+      await memberStore.login(loginId.value, password.value)
 
-      if (response.data.success) {
-        // 로그인 성공하면
+      if (memberStore.isLoggedIn) {
         router.replace('/home')
-      } else {
-        // 로그인 실패하면
-        errorMessage.value = '아이디 또는 비밀번호가 잘못되었습니다 🥲'
       }
     } catch (err) {
-      errorMessage.value = '서버 요청에 실패했습니다. 다시 시도해 주세요.'
+      errorMessage.value = err.message
       console.error(err)
     }
   } else {
