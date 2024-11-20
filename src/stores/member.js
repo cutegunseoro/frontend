@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { memberConfirm } from '@/api/member'
+import { memberConfirm, memberRegist } from '@/api/member'
 
 export const useMemberStore = defineStore('member', () => {
   const memberInfo = ref(null)
@@ -21,9 +21,24 @@ export const useMemberStore = defineStore('member', () => {
         throw new Error('아이디 또는 비밀번호가 잘못되었습니다.')
       }
     }, (err) => {
-      throw err
+      throw new Error(err.message)
     })
   }
 
-  return { memberInfo, isLoggedIn, login }
+  const regist = async (loginId, password, publicId) => {
+    const param = { loginId, password, publicId }
+
+    await memberRegist(param, (response) => {
+      if (response.status === 200) {
+        // 회원가입 성공 시
+        return true
+      } else {
+        throw new Error('회원가입에 실패했습니다.')
+      }
+    }, (err) => {
+      throw new Error(err.message)
+    })
+  }
+
+  return { memberInfo, isLoggedIn, login, regist }
 })

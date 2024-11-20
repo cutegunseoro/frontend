@@ -17,7 +17,7 @@
       <input type="password" id="passwordConfirm" v-model="passwordConfirm" required />
 
       <label for="publicId">핸들</label>
-      <input type="text" id="publicId" v-model.trim="publicId" required />
+      <input type="text" id="publicId" v-model.trim="publicId" required @keydown.enter="handleRegist" />
     </div>
     <div class="error-message">{{ errorMessage }}</div>
     <button class="login-btn" @click="handleRegist">회원가입</button>
@@ -27,9 +27,10 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios'
+import { useMemberStore } from '@/stores/member'
 
 const router = useRouter()
+const memberStore = useMemberStore()
 
 const goBack = () => {
   router.go(-1)
@@ -47,21 +48,12 @@ const handleRegExp = /^[A-Za-z0-9]{4,}$/
 const handleRegist = async () => {
   if (isValidForm()) {
     try {
-      const response = await axios.post('/post URL...', {
-        loginId: loginId.value,
-        password: password.value,
-        publicId: publicId.value,
-      })
+      await memberStore.regist(loginId.value, password.value, publicId.value)
 
-      if (response.data.success) {
-        alert('회원가입 성공')
-        router.replace('/login')
-      } else {
-        errorMessage.value = response.data.message
-          || '알 수 없는 오류가 발생했습니다. 잠시 뒤에 시도해주세요.'
-      }
+      alert('정상적으로 회원가입 되었습니다!')
+      router.replace('/login')
     } catch (err) {
-      errorMessage.value = '서버 요청에 실패했습니다. 다시 시도해주세요.'
+      errorMessage.value = err.message
       console.log(err)
     }
   }
@@ -73,7 +65,7 @@ const isValidForm = () => {
     return false
   } else if (!pwRegExp.test(password.value)) {
     errorMessage.value =
-      '비밀번호는 영문, 숫자, 특수문자(!@#$%^&*)을 포함하여 8자 이상이어야 합니다.'
+      '비밀번호는 영문, 숫자, 특수문자(!@#$%^&*)를 포함하여 8자 이상이어야 합니다.'
     return false
   } else if (password.value !== passwordConfirm.value) {
     errorMessage.value = '비밀번호 확인이 일치하지 않습니다.'
