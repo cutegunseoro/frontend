@@ -27,6 +27,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const router = useRouter()
 
@@ -43,9 +44,26 @@ const idRegExp = /^[A-Za-z0-9]{8,}$/
 const pwRegExp = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/
 const handleRegExp = /^[A-Za-z0-9]{4,}$/
 
-const handleRegist = () => {
+const handleRegist = async () => {
   if (isValidForm()) {
-    errorMessage.value = '회원가입 유효성 검사 통과'
+    try {
+      const response = await axios.post('/post URL...', {
+        loginId: loginId.value,
+        password: password.value,
+        publicId: publicId.value,
+      })
+
+      if (response.data.success) {
+        alert('회원가입 성공')
+        router.push('/login')
+      } else {
+        errorMessage.value = response.data.message
+          || '알 수 없는 오류가 발생했습니다. 잠시 뒤에 시도해주세요.'
+      }
+    } catch (err) {
+      errorMessage.value = '서버 요청에 실패했습니다. 다시 시도해주세요.'
+      console.log(err)
+    }
   }
 }
 
