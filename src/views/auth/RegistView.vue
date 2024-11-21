@@ -60,20 +60,20 @@ const handleRegist = async () => {
 }
 
 const isValidForm = () => {
-  if (!idRegExp.test(loginId.value)) {
-    errorMessage.value = '아이디는 8자 이상이어야 합니다.'
-    return false
-  } else if (!pwRegExp.test(password.value)) {
-    errorMessage.value =
-      '비밀번호는 영문, 숫자, 특수문자(!@#$%^&*)를 포함하여 8자 이상이어야 합니다.'
-    return false
-  } else if (password.value !== passwordConfirm.value) {
-    errorMessage.value = '비밀번호 확인이 일치하지 않습니다.'
-    return false
-  } else if (!handleRegExp.test(publicId.value)) {
-    errorMessage.value = '핸들은 4자 이상이어야 합니다.'
-    return false
-  }
+  // if (!idRegExp.test(loginId.value)) {
+  //   errorMessage.value = '아이디는 8자 이상이어야 합니다.'
+  //   return false
+  // } else if (!pwRegExp.test(password.value)) {
+  //   errorMessage.value =
+  //     '비밀번호는 영문, 숫자, 특수문자(!@#$%^&*)를 포함하여 8자 이상이어야 합니다.'
+  //   return false
+  // } else if (password.value !== passwordConfirm.value) {
+  //   errorMessage.value = '비밀번호 확인이 일치하지 않습니다.'
+  //   return false
+  // } else if (!handleRegExp.test(publicId.value)) {
+  //   errorMessage.value = '핸들은 4자 이상이어야 합니다.'
+  //   return false
+  // }
 
   return true
 }

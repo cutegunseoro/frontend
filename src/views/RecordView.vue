@@ -88,7 +88,7 @@ const stopRecording = () => {
     recordedChunks.value = []
 
     // 녹화가 완료되면 비디오 다시 재생
-    router.push({ name: 'playback', query: { videoUrl: videoUrl.value } })
+    router.replace({ name: 'playback', query: { videoUrl: videoUrl.value } })
   }
 
   console.log('녹화 끝')

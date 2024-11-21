@@ -63,7 +63,7 @@ const handleDeleteIconClick = () => {
 }
 </script>
 
-<style>
+<style scoped>
 .video-container {
   display: flex;
   flex-direction: column;

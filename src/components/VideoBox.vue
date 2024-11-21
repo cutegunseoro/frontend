@@ -19,6 +19,7 @@ const videos = ref([
   { title: '영상 6' },
   { title: '영상 7' },
   { title: '영상 8' },
+  { title: '영상 9' },
 ])
 </script>
 
@@ -28,7 +29,7 @@ const videos = ref([
   grid-template-columns: repeat(3, 1fr);
   overflow-y: auto;
   width: 100%;
-  /* margin-top: 1rem; */
+  margin-top: 1rem;
 }
 
 .video-container::-webkit-scrollbar {

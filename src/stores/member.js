@@ -5,11 +5,11 @@ import { memberConfirm, memberRegist } from '@/api/member'
 export const useMemberStore = defineStore('member', () => {
   // 기본 값
   const memberInfo = ref({
-    loginId: "gwonhong",
+    // loginId: "gwonhong",
     publicId: "kirby",
-    name: '거니',
-    bio: '인생은 동영상이다..',
-    travelStyle: '활동적인',
+    // name: '거니',
+    // bio: '인생은 동영상이다..',
+    // travelStyle: '활동적인',
   })
 
   // 현재 로그인 상태
@@ -24,7 +24,7 @@ export const useMemberStore = defineStore('member', () => {
         const jwt = response.data.accessToken
         sessionStorage.setItem('jwt', jwt)
 
-        memberInfo.value = response.data.member
+        memberInfo.value = response.data.memberInfo
         isLoggedIn.value = true
       } else {
         throw new Error('아이디 또는 비밀번호가 잘못되었습니다.')

@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const { VITE_VUE_API_URL } = import.meta.env
 
-export const localAxios = () => {
+export const createApiClient = () => {
   const token = sessionStorage.getItem('jwt')
 
   const instance = axios.create({

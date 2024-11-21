@@ -6,17 +6,17 @@
         <div class="image-wrapper">
           <img :src="defaultImage" alt="profile" class="user-image" />
         </div>
-        <div>{{ user.name }}</div>
+        <div>{{ user.publicId }}</div>
       </div>
       <!-- 프로필 소개 -->
       <div class="user-info-right">
         <div class="user-bio">
           <div class="user-info-title">Bio</div>
-          <div class="user-info-content">{{ user.bio }}</div>
+          <div class="user-info-content">{{ user.publicId }}</div>
         </div>
         <div class="user-travel-style">
           <div class="user-info-title">Travel Style</div>
-          <div class="user-info-content">{{ user.travelStyle }}</div>
+          <div class="user-info-content">{{ user.publicId }}</div>
         </div>
       </div>
     </div>
