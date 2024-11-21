@@ -4,7 +4,10 @@
       <RangeCalendar />
     </div>
     <div class="travel-container">
-      <div class="travel-label">여행 기록</div>
+      <div class="travel-header">
+        <div>여행 기록</div>
+        <div>일정 추가</div>
+      </div>
       <div class="travel-list">
         <div v-for="travelItem in travelList" :key="travelItem.id" class="travel-item">
           <img :src="TravelImage" class="travel-image" />
@@ -105,7 +108,9 @@ const travelList = ref([
   width: 90%;
 }
 
-.travel-label {
+.travel-header {
+  display: flex;
+  justify-content:space-between;
   padding: 0.4rem;
 }
 

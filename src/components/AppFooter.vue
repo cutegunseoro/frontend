@@ -1,8 +1,13 @@
 <template>
   <div class="footer">
     <router-link to="/home" class="no-style">
-      <font-awesome-icon size="lg" :icon="['fas', 'home']" />
-      <div class="footer-text">home</div>
+      <font-awesome-icon size="lg" :icon="['fas', 'compass']" />
+      <div class="footer-text">explore</div>
+    </router-link>
+
+    <router-link to="/" class="no-style">
+      <font-awesome-icon size="lg" :icon="['fas', 'add']" />
+      <div class="footer-text">add</div>
     </router-link>
 
     <router-link to="/record" class="no-style">
@@ -12,7 +17,7 @@
 
     <router-link to="/calendar" class="no-style">
       <font-awesome-icon size="lg" :icon="['fas', 'calendar-days']" />
-      <div class="footer-text">calendar</div>
+      <div class="footer-text">history</div>
     </router-link>
 
     <router-link to="/profile" class="no-style">
