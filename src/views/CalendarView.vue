@@ -2,6 +2,7 @@
   <div class="calendar-view">
     <div class="calendar-wrapper">
       <RangeCalendar />
+
     </div>
     <div class="travel-container">
       <div class="travel-header">
@@ -23,7 +24,6 @@
             <font-awesome-icon
               class="travel-icon delete-icon"
               :icon="['fas', 'trash']"
-              @click="handleDeleteIconClick"
             />
           </div>
         </div>
@@ -94,7 +94,8 @@ const travelList = ref([
 }
 
 .calendar-wrapper {
-
+  // width: 100%;
+  // background-color: aqua;
 }
 
 .travel-image {

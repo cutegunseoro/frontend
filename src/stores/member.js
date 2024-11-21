@@ -50,4 +50,6 @@ export const useMemberStore = defineStore('member', () => {
   }
 
   return { memberInfo, isLoggedIn, login, regist }
+}, {
+  persist: true,
 })

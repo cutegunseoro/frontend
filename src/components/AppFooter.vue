@@ -6,7 +6,7 @@
     </router-link>
 
     <router-link to="/" class="no-style">
-      <font-awesome-icon size="lg" :icon="['fas', 'add']" />
+      <font-awesome-icon size="lg" :icon="['fas', 'calendar-plus']" />
       <div class="footer-text">add</div>
     </router-link>
 
