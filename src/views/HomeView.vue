@@ -1,5 +1,5 @@
 <template>
-  <KakaoMap :keyword="keyword" />
+  <KakaoMap />
 </template>
 
 <script setup>

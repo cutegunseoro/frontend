@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import IntroView from '@/views/IntroView.vue'
 import HomeView from '@/views/HomeView.vue'
 import PlanView from '@/views/PlanView.vue'
+import AddView from '@/views/AddView.vue'
 import RecordView from '@/views/RecordView.vue'
 import CalendarView from '@/views/CalendarView.vue'
 import ProfileView from '@/views/ProfileView.vue'
@@ -28,6 +29,12 @@ const router = createRouter({
       path: "/plan",
       name: "plan",
       component: PlanView,
+    },
+
+    {
+      path: "/add",
+      name: "add",
+      component: AddView,
     },
 
     {
