@@ -5,9 +5,9 @@
       <div class="footer-text">explore</div>
     </router-link>
 
-    <router-link to="/" class="no-style">
+    <router-link to="/plan" class="no-style">
       <font-awesome-icon size="lg" :icon="['fas', 'calendar-plus']" />
-      <div class="footer-text">add</div>
+      <div class="footer-text">plan</div>
     </router-link>
 
     <router-link to="/record" class="no-style">
@@ -15,7 +15,7 @@
       <div class="footer-text">record</div>
     </router-link>
 
-    <router-link to="/calendar" class="no-style">
+    <router-link to="/history" class="no-style">
       <font-awesome-icon size="lg" :icon="['fas', 'calendar-days']" />
       <div class="footer-text">history</div>
     </router-link>

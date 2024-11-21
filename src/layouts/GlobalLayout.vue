@@ -1,6 +1,6 @@
 <template>
   <div :class="isMobile ? '' : 'layout-container'">
-    <AppHeader v-if="!(isIntroView || isRecordView || isAuthView || isHomeView)" />
+    <AppHeader v-if="isHistoryView || isProfileView" />
     <slot></slot>
     <AppFooter v-if="!(isIntroView || isRecordView || isAuthView)" />
   </div>
@@ -15,10 +15,11 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 const isMobile = ref(false)
 
-const isRecordView = computed(() => ['/record', '/playback'].includes(route.path))
 const isIntroView = computed(() => route.path === '/')
-const isHomeView = computed(() => route.path === '/home')
 const isAuthView = computed(() => ['/login', '/regist'].includes(route.path))
+const isRecordView = computed(() => ['/record', '/playback'].includes(route.path))
+const isHistoryView = computed(() => route.path === '/history')
+const isProfileView = computed(() => route.path === '/profile')
 
 const handleResize = () => {
   isMobile.value = window.innerWidth <= 480
