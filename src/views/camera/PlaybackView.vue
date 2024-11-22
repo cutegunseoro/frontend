@@ -52,7 +52,7 @@ const shareVideo = async () => {
     }, (response) => {
       console.log(response.data)
     }, (err) => {
-      console.lof(err)
+      console.log(err)
     })
 
   } catch (err) {
