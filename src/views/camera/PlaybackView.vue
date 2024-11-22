@@ -29,6 +29,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { uploadVideo } from '@/api/video'
 
 const router = useRouter()
 const route = useRoute()
@@ -46,6 +47,13 @@ const shareVideo = async () => {
 
     const file = new File([videoBlob], 'video.webm', { type: 'video/webm' });
 
+    await uploadVideo({
+      file
+    }, (response) => {
+      console.log(response.data)
+    }, (err) => {
+      console.lof(err)
+    })
 
   } catch (err) {
     console.log(err)
