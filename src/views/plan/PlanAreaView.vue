@@ -190,8 +190,8 @@ input:focus {
 
 .next-btn {
   position: absolute;
-  bottom: 5rem;
-  right: 1rem;
+  bottom: 6rem;
+  right: 2rem;
   z-index: 100;
   display: flex;
   justify-content: center;
