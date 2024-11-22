@@ -11,14 +11,12 @@
 </template>
 
 <script setup>
-
 const closeModal = () => {
   emits('update:visible', false)
 }
 
 const emits = defineEmits(['update:visible'])
-const props = defineProps({visible: Boolean})
-
+const props = defineProps({ visible: Boolean })
 </script>
 
 <style scoped lang="scss">
@@ -41,10 +39,9 @@ const props = defineProps({visible: Boolean})
   align-items: center;
   background-color: white;
   padding: 1rem;
-  border: 2px dashed colors.$secondary-color;
   border-radius: 1rem;
   width: 50%;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .modal-btn-container {
@@ -55,7 +52,7 @@ const props = defineProps({visible: Boolean})
 }
 
 .modal-btn {
-  background-color: black;
+  background-color: colors.$secondary-color;
   color: white;
   padding: 0.4rem 0.8rem;
   border-radius: 1rem;

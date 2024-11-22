@@ -3,7 +3,7 @@
     <div class="travel-container">
       <div class="travel-header">
         <div>여행 기록</div>
-        <div>일정 추가</div>
+        <div class="plan-btn">일정 추가</div>
       </div>
       <div class="travel-list">
         <div v-for="travelItem in travelList" :key="travelItem.id" class="travel-item">
@@ -162,5 +162,9 @@ const travelList = ref([
 
 .delete-icon {
   color: red;
+}
+
+.plan-btn {
+  cursor: pointer;
 }
 </style>

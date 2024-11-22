@@ -5,7 +5,11 @@
         <font-awesome-icon class="header-icon" size="lg" :icon="['fas', 'angle-left']" />
       </div>
       <div class="search-input-container">
-        <input :value="keyword" @input="handleInputChange" placeholder="어디로 여행을 떠나시나요?"/>
+        <input
+          :value="keyword"
+          @input="handleInputChange"
+          placeholder="어디로 여행을 떠나시나요?"
+        />
         <ScrollArea v-show="keyword" className="rounded-lg p-4 scroll-area">
           <div class="search-result-container">
             <div class="search-result-list">
@@ -22,11 +26,7 @@
           </div>
         </ScrollArea>
       </div>
-      <font-awesome-icon
-        class="search-icon"
-        size="lg"
-        :icon="['fas', 'magnifying-glass']"
-      />
+      <font-awesome-icon class="search-icon" size="lg" :icon="['fas', 'magnifying-glass']" />
     </div>
     <div v-show="markers.length > 0" class="next-btn" @click="handleNextIconClick">
       <font-awesome-icon :icon="['fas', 'arrow-right']" />
@@ -38,7 +38,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { ScrollArea } from "@/components/ui/scroll-area"
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 const { VITE_KAKAO_MAP_KEY } = import.meta.env
 const router = useRouter()
@@ -139,6 +139,7 @@ onMounted(async () => {
   console.log(ScrollArea)
 })
 </script>
+
 <style scoped lang="scss">
 .add-view {
   position: relative;
@@ -174,7 +175,16 @@ input:focus {
 .search-icon {
   padding: 0.5rem 0rem;
   color: colors.$highlight-color;
+  transition: transform 0.3s ease;
   cursor: pointer;
+}
+
+.search-icon:hover {
+  transform: scale(1.2);
+}
+
+.search-icon:active {
+  transform: scale(0.9);
 }
 
 .scroll-area {

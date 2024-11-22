@@ -1,7 +1,7 @@
 <template>
   <div v-if="!currentTravel" class="playback-view">
     <div>현재 진행 중인 여행이 없습니다 . . .</div>
-    <button @click="handleAddClick">여행 일정 추가</button>
+    <button class="plan-btn" @click="handleAddClick">여행 일정 추가</button>
   </div>
   <div v-else>현재 여행 일정</div>
 </template>
@@ -46,5 +46,9 @@ button {
   font-size: inherit;
   transition: background-color 0.3s ease;
   cursor: pointer;
+}
+
+.plan-btn:hover {
+  background-color: colors.$highlight-color;
 }
 </style>
