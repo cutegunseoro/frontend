@@ -47,6 +47,5 @@ onBeforeUnmount(() => {
   border-left: 1px solid #f0f0f0;
   border-right: 1px solid #f0f0f0;
   box-sizing: content-box;
-  overflow: hidden;
 }
 </style>

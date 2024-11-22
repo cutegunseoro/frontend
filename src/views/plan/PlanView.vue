@@ -15,7 +15,7 @@ const currentTravel = ref(null)
 const router = useRouter()
 
 const handleAddClick = () => {
-  router.push('/add')
+  router.push('/plan/area')
 }
 </script>
 

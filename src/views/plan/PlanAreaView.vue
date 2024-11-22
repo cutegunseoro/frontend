@@ -2,42 +2,71 @@
   <div class="add-view">
     <div class="search-container">
       <div class="search-input-container">
-        <input v-model.trim="keyword" @keydown.enter="handleSearchIconClick" />
-        <font-awesome-icon
-          class="search-icon"
-          size="lg"
-          :icon="['fas', 'magnifying-glass']"
-          @click="handleSearchIconClick"
-        />
+        <input :value="keyword" @input="handleInputChange" placeholder="어디로 여행을 떠나시나요?"/>
+        <ScrollArea v-show="keyword" className="rounded-lg p-4 scroll-area">
+          <div class="search-result-container">
+            <div class="search-result-list">
+              <div
+                class="search-result-item"
+                v-for="place in searchedPlaces"
+                :key="place.id"
+                @click="handlePlaceClick(place)"
+              >
+                <div>{{ place.place_name }}</div>
+                <div>{{ place.road_address_name }}</div>
+              </div>
+            </div>
+          </div>
+        </ScrollArea>
       </div>
-      <ScrollArea className="h-[200px] w-[350px] rounded-md border p-4">
-        Jokester began sneaking into the castle in the middle of the night and leaving
-        jokes all over the place: under the king's pillow, in his soup, even in the
-        royal toilet. The king was furious, but he couldn't seem to stop Jokester. And
-        then, one day, the people of the kingdom discovered that the jokes left by
-        Jokester were so funny that they couldn't help but laugh. And once they
-        started laughing, they couldn't stop.
-      </ScrollArea>
+      <font-awesome-icon
+        class="search-icon"
+        size="lg"
+        :icon="['fas', 'magnifying-glass']"
+      />
     </div>
-    <div ref="mapContainer" style="width: 100%; height: 100vh; position: relative"></div>
+    <div v-show="markers.length > 0" class="next-btn" @click="handleNextIconClick">
+      <font-awesome-icon :icon="['fas', 'arrow-right']" />
+    </div>
+    <div ref="mapContainer" style="width: 100%; height: 100vh"></div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { ScrollArea } from "@/components/ui/scroll-area"
 
 const { VITE_KAKAO_MAP_KEY } = import.meta.env
+const router = useRouter()
 
+const keyword = ref('')
 const searchedPlaces = ref([])
 const mapContainer = ref(null)
 
 let mapInstance = null // 지도 인스턴스 저장
 let markers = [] // 마커들을 저장할 배열
 
-const tags = Array.from({ length: 50 }).map(
-  (_, i, a) => `v1.2.0-beta.${a.length - i}`,
-)
+const handleInputChange = (event) => {
+  keyword.value = event.target.value
+  showSearchedPlaces()
+}
+
+const showSearchedPlaces = () => {
+  if (keyword.value) {
+    searchPlaces(keyword.value)
+  }
+}
+
+const handlePlaceClick = (place) => {
+  addMarker(place)
+
+  keyword.value = ''
+}
+
+const handleNextIconClick = () => {
+  router.push('/plan/period')
+}
 
 const loadKakaoMap = (container, lat = 36.5, lng = 127.8) => {
   const script = document.createElement('script')
@@ -67,9 +96,6 @@ const addMarker = (place) => {
 
   marker.setMap(mapInstance)
   markers.push(marker)
-
-  // 지도의 중심을 마커 위치로 이동
-  mapInstance.setCenter(position)
 }
 
 // 기존에 있던 마커들 제거
@@ -109,59 +135,82 @@ onMounted(async () => {
 <style scoped lang="scss">
 .add-view {
   position: relative;
+  display: flex;
   width: 100%;
+  justify-content: center;
 }
 
 .search-container {
+  display: flex;
   position: absolute;
-  top: 0;
-  width: 100%;
+  top: 2rem;
+  width: 80%;
   z-index: 100;
 }
 
 .search-input-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 6rem;
+  width: 100%;
+  margin: 0rem 1rem;
 }
 
 input {
-  width: 80%;
+  width: 100%;
   height: 2rem;
   border-radius: 1rem;
   padding: 0rem 1rem;
-  margin: 0rem 1rem;
 }
 
 input:focus {
   outline: none;
-  border: 0.1rem solid colors.$highlight-color;
 }
 
 .search-icon {
+  padding: 0.5rem 0rem;
   color: colors.$highlight-color;
-  cursor: pointer;
 }
 
-.search-result-container {
-  position: absolute;
-  width: 100%;
-  height: 40vh;
-  background-color: white;
+.scroll-area {
+  height: 14rem;
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
-.search-result-list {
-  overflow-y: auto;
-  max-height: 40vh;
+.search-result-container::-webkit-scrollbar {
+  display: none;
 }
 
 .search-result-item {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   height: 4rem;
-  padding: 1rem;
+  padding: 0rem 1rem;
   cursor: pointer;
   border-bottom: 1px solid #f0f0f0;
+}
+
+.next-btn {
+  position: absolute;
+  bottom: 5rem;
+  right: 1rem;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3rem;
+  width: 3rem;
+  background-color: colors.$secondary-color;
+  color: colors.$primary-color;
+  border-radius: 50%;
+  // font-size: 0.8rem;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.next-btn:hover {
+  transform: scale(1.1);
+}
+
+.next-btn:active {
+  transform: scale(0.9);
 }
 </style>

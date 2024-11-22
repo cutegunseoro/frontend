@@ -1,14 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import IntroView from '@/views/IntroView.vue'
-import HomeView from '@/views/HomeView.vue'
-import PlanView from '@/views/PlanView.vue'
-import AddView from '@/views/AddView.vue'
-import RecordView from '@/views/RecordView.vue'
-import CalendarView from '@/views/CalendarView.vue'
-import ProfileView from '@/views/ProfileView.vue'
 import LoginView from '@/views/auth/LoginView.vue'
 import RegistView from '@/views/auth/RegistView.vue'
-import PlaybackView from '@/views/PlaybackView.vue'
+
+import HomeView from '@/views/HomeView.vue'
+
+import PlanView from '@/views/plan/PlanView.vue'
+import PlanAreaView from '@/views/plan/PlanAreaView.vue'
+import PlanPeriodView from '@/views/plan/PlanPeriodView.vue'
+
+import RecordView from '@/views/camera/RecordView.vue'
+import PlaybackView from '@/views/camera/PlaybackView.vue'
+
+import CalendarView from '@/views/CalendarView.vue'
+import ProfileView from '@/views/ProfileView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,9 +37,15 @@ const router = createRouter({
     },
 
     {
-      path: "/add",
-      name: "add",
-      component: AddView,
+      path: "/plan/area",
+      name: "planArea",
+      component: PlanAreaView,
+    },
+
+    {
+      path: "/plan/period",
+      name: "planPeriod",
+      component: PlanPeriodView,
     },
 
     {
