@@ -18,7 +18,7 @@ const isMobile = ref(false)
 const isIntroView = computed(() => route.path === '/')
 const isAuthView = computed(() => ['/login', '/regist'].includes(route.path))
 const isRecordView = computed(() => ['/record', '/playback'].includes(route.path))
-const isHistoryView = computed(() => route.path === '/history')
+const isHistoryView = computed(() => ['/history', '/travel'].includes(route.path))
 const isProfileView = computed(() => route.path === '/profile')
 
 const handleResize = () => {

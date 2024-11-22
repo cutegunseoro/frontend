@@ -136,7 +136,6 @@ const searchPlaces = (keyword) => {
 // 컴포넌트가 마운트되면 사용자 위치에 맵 로딩
 onMounted(async () => {
   loadKakaoMap(mapContainer.value)
-  console.log(ScrollArea)
 })
 </script>
 

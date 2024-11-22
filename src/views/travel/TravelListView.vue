@@ -3,7 +3,7 @@
     <div class="travel-container">
       <div class="travel-header">
         <div>여행 기록</div>
-        <div class="plan-btn">일정 추가</div>
+        <div class="plan-btn" @click="handlePlanClick">일정 추가</div>
       </div>
       <div class="travel-list">
         <div v-for="travelItem in travelList" :key="travelItem.id" class="travel-item">
@@ -16,7 +16,11 @@
             </div>
           </div>
           <div class="travel-icon-container">
-            <font-awesome-icon :icon="['fas', 'video']" class="travel-icon" />
+            <font-awesome-icon
+              :icon="['fas', 'video']"
+              class="travel-icon"
+              @click="handleVideoIconClick(travelItem.id)"
+            />
             <font-awesome-icon class="travel-icon delete-icon" :icon="['fas', 'trash']" />
           </div>
         </div>
@@ -29,6 +33,17 @@
 import TravelImage from '@/assets/images/Suwon.jpg'
 
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const handlePlanClick = () => {
+  router.push('/plan/area')
+}
+
+const handleVideoIconClick = (travelId) => {
+  router.push(`/history/${travelId}`)
+}
 
 const travelList = ref([
   {
