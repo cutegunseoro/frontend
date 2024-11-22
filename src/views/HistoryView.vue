@@ -1,9 +1,5 @@
 <template>
   <div class="calendar-view">
-    <div class="calendar-wrapper">
-      <RangeCalendar />
-
-    </div>
     <div class="travel-container">
       <div class="travel-header">
         <div>여행 기록</div>
@@ -21,10 +17,7 @@
           </div>
           <div class="travel-icon-container">
             <font-awesome-icon :icon="['fas', 'video']" class="travel-icon" />
-            <font-awesome-icon
-              class="travel-icon delete-icon"
-              :icon="['fas', 'trash']"
-            />
+            <font-awesome-icon class="travel-icon delete-icon" :icon="['fas', 'trash']" />
           </div>
         </div>
       </div>
@@ -33,7 +26,6 @@
 </template>
 
 <script setup>
-import RangeCalendar from '@/components/ui/range-calendar/RangeCalendar.vue'
 import TravelImage from '@/assets/images/Suwon.jpg'
 
 import { ref } from 'vue'
@@ -80,22 +72,15 @@ const travelList = ref([
     endDatetime: '2024-11-27',
   },
 ])
-
 </script>
 
 <style scoped lang="scss">
-
 .calendar-view {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
-}
-
-.calendar-wrapper {
-  // width: 100%;
-  // background-color: aqua;
+  width: 90%;
 }
 
 .travel-image {
@@ -106,17 +91,18 @@ const travelList = ref([
 }
 
 .travel-container {
-  width: 90%;
+  width: 100%;
 }
 
 .travel-header {
   display: flex;
-  justify-content:space-between;
-  padding: 0.4rem;
+  justify-content: space-between;
+  align-items: center;
+  height: 2rem;
 }
 
 .travel-list {
-  height: 50vh;
+  height: calc(100vh - 10rem);
   overflow-y: auto;
 }
 
