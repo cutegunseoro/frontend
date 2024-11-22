@@ -1,22 +1,24 @@
 <template>
   <div class="travel-view">
-    <div ref="mapContainer" style="width: 100%; height: 40vh"></div>
-
-    <div class="travel-item">
-      <img :src="TravelImage" class="travel-image" />
-      <div class="travel-info">
-        <div class="travel-info-top">
-          <div class="travel-area">{{ travelItem.area }}</div>
-          <div class="travel-title">{{ travelItem.title }}</div>
-        </div>
-        <div class="travel-period">
-          {{ travelItem.startDatetime }} ~ {{ travelItem.endDatetime }}
+    <div class="travel-container">
+      <div class="travel-item">
+        <img :src="TravelImage" class="travel-image" />
+        <div class="travel-info">
+          <div class="travel-info-top">
+            <div class="travel-area">{{ travelItem.area }}</div>
+            <div class="travel-title">{{ travelItem.title }}</div>
+          </div>
+          <div class="travel-period">
+            {{ travelItem.startDatetime }} ~ {{ travelItem.endDatetime }}
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="video-list">
-      <div>비디오!</div>
+      <div ref="mapContainer" style="width: 100%; height: 40vh; border: 1px solid #f0f0f0"></div>
+
+      <div class="video-list">
+        <div>비디오!</div>
+      </div>
     </div>
   </div>
 </template>
@@ -34,6 +36,22 @@ const travelItem = ref({
   startDatetime: '2024-11-26',
   endDatetime: '2024-11-27',
 })
+
+const videos = ref([
+  {
+    title: '영상 1',
+    lat: 0,
+    lng: 0,
+  },
+  { title: '영상 2' },
+  { title: '영상 3' },
+  { title: '영상 4' },
+  { title: '영상 5' },
+  { title: '영상 6' },
+  { title: '영상 7' },
+  { title: '영상 8' },
+  { title: '영상 9' },
+])
 
 // const searchedPlaces = ref([])
 const mapContainer = ref(null)
@@ -89,6 +107,14 @@ onMounted(async () => {
 
 <style scoped>
 .travel-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.travel-container {
   width: 90%;
 }
 
@@ -103,7 +129,6 @@ onMounted(async () => {
   display: flex;
   justify-content: space-between;
   padding: 0.6rem 0rem;
-  border-bottom: 1px solid #f0f0f0;
 }
 
 .travel-info {

@@ -18,7 +18,7 @@ const isMobile = ref(false)
 const isIntroView = computed(() => route.path === '/')
 const isAuthView = computed(() => ['/login', '/regist'].includes(route.path))
 const isRecordView = computed(() => ['/record', '/playback'].includes(route.path))
-const isHistoryView = computed(() => ['/history', '/travel'].includes(route.path))
+const isHistoryView = computed(() => ['history', 'historyDetail'].includes(route.name))
 const isProfileView = computed(() => route.path === '/profile')
 
 const handleResize = () => {
@@ -40,7 +40,6 @@ onBeforeUnmount(() => {
   min-height: 100vh;
   max-width: 480px;
   margin: 0 auto;
-  background-color: colors.$background-color-light;
   display: flex;
   flex-direction: column;
   align-items: center;

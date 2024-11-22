@@ -26,6 +26,7 @@ const handleAddClick = () => {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  width: 100%;
 }
 
 button {
@@ -36,7 +37,7 @@ button {
   justify-content: center;
   align-items: center;
   height: 3rem;
-  width: 80%;
+  width: 70%;
   background-color: colors.$secondary-color;
   color: white;
   border: none;

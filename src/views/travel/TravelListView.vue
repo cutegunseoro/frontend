@@ -95,7 +95,7 @@ const travelList = ref([
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 90%;
+  width: 100%;
 }
 
 .travel-image {
@@ -106,7 +106,7 @@ const travelList = ref([
 }
 
 .travel-container {
-  width: 100%;
+  width: 90%;
 }
 
 .travel-header {
