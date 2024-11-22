@@ -1,6 +1,9 @@
 <template>
   <div class="add-view">
     <div class="search-container">
+      <div class="search-icon" @click="goBack">
+        <font-awesome-icon class="header-icon" size="lg" :icon="['fas', 'angle-left']" />
+      </div>
       <div class="search-input-container">
         <input :value="keyword" @input="handleInputChange" placeholder="어디로 여행을 떠나시나요?"/>
         <ScrollArea v-show="keyword" className="rounded-lg p-4 scroll-area">
@@ -39,6 +42,10 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 
 const { VITE_KAKAO_MAP_KEY } = import.meta.env
 const router = useRouter()
+
+const goBack = () => {
+  router.go(-1)
+}
 
 const keyword = ref('')
 const searchedPlaces = ref([])

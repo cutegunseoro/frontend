@@ -38,9 +38,20 @@ const videoUrl = ref(null)
 
 const isPlaying = ref(false)
 
-const shareVideo = () => {
-  alert('비디오가 게시되었습니다!')
-  router.replace('/profile')
+const shareVideo = async () => {
+  console.log(videoUrl.value)
+
+  try {
+    const videoBlob = await fetch(videoUrl.value).then((response) => response.blob())
+
+    const file = new File([videoBlob], 'video.webm', { type: 'video/webm' });
+
+
+  } catch (err) {
+    console.log(err)
+  }
+
+  // router.replace('/profile')
 }
 
 const playVideo = () => {
