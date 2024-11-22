@@ -12,7 +12,7 @@ import PlanPeriodView from '@/views/plan/PlanPeriodView.vue'
 import RecordView from '@/views/camera/RecordView.vue'
 import PlaybackView from '@/views/camera/PlaybackView.vue'
 
-import CalendarView from '@/views/CalendarView.vue'
+import HistoryView from '@/views/HistoryView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 
 const router = createRouter({
@@ -57,7 +57,7 @@ const router = createRouter({
     {
       path: '/history',
       name: 'history',
-      component: CalendarView,
+      component: HistoryView,
     },
 
     {
