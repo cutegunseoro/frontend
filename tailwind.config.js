@@ -5,14 +5,14 @@ module.exports = {
   darkMode: ["class"],
   safelist: ["dark"],
   prefix: "",
-  
+
   content: [
     './pages/**/*.{js,jsx,vue}',
     './components/**/*.{js,jsx,vue}',
     './app/**/*.{js,jsx,vue}',
     './src/**/*.{js,jsx,vue}',
 	],
-  
+
   theme: {
     container: {
       center: true,
@@ -29,7 +29,7 @@ module.exports = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "#b27fd4",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {

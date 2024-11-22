@@ -35,12 +35,12 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .layout-container {
   min-height: 100vh;
   max-width: 480px;
   margin: 0 auto;
-  background-color: white;
+  background-color: colors.$background-color-light;
   display: flex;
   flex-direction: column;
   align-items: center;

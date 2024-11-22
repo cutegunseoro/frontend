@@ -216,6 +216,10 @@ input:focus {
   max-height: 40vh;
 }
 
+.search-result-list::-webkit-scrollbar {
+  display: none;
+}
+
 .search-result-item {
   display: flex;
   align-items: center;

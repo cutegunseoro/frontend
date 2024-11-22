@@ -32,6 +32,7 @@ const props = defineProps({visible: Boolean})
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 100;
 }
 
 .modal-content {
@@ -43,7 +44,6 @@ const props = defineProps({visible: Boolean})
   border: 2px dashed colors.$secondary-color;
   border-radius: 1rem;
   width: 50%;
-  box-sizing: content-box;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 

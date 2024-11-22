@@ -174,6 +174,7 @@ input:focus {
 .search-icon {
   padding: 0.5rem 0rem;
   color: colors.$highlight-color;
+  cursor: pointer;
 }
 
 .scroll-area {
