@@ -29,7 +29,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { uploadVideo } from '@/api/video'
+import axios from 'axios'
+// import { uploadVideo } from '@/api/video'
 
 const router = useRouter()
 const route = useRoute()
@@ -41,25 +42,34 @@ const isPlaying = ref(false)
 
 const shareVideo = async () => {
   console.log(videoUrl.value)
+  console.log('jwt: ', sessionStorage.getItem('jwt'))
 
   try {
+    // 1. 비디오 Blob 생성
     const videoBlob = await fetch(videoUrl.value).then((response) => response.blob())
 
-    const file = new File([videoBlob], 'video.webm', { type: 'video/webm' });
+    // 2. Blob을 File 객체로 변환
+    const file = new File([videoBlob], 'video.webm', { type: 'video/webm' })
 
-    await uploadVideo({
-      file
-    }, (response) => {
-      console.log(response.data)
-    }, (err) => {
-      console.log(err)
+    // 3. FormData에 파일 추가
+    const formData = new FormData()
+    formData.append('file', file)
+
+    // 4. JWT 가져오기
+    const token = sessionStorage.getItem('jwt')
+
+    // 5. Axios를 통해 multipart 요청 전송
+    const response = await axios.post('http://localhost:8080/videos/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data', // 반드시 multipart 설정
+        Authorization: token ? `Bearer ${token}` : '', // JWT 토큰 포함
+      },
     })
 
+    console.log('응답 데이터:', response.data)
   } catch (err) {
-    console.log(err)
+    console.error('업로드 중 오류 발생:', err)
   }
-
-  // router.replace('/profile')
 }
 
 const playVideo = () => {
