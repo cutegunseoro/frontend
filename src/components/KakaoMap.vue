@@ -7,20 +7,19 @@
       </div>
     </div>
 
-    <div ref="mapContainer" style="width: 100%; height: 100vh; position: relative"></div>
+    <div ref="mapContainer" style="width: 100%; height: 50vh; position: relative"></div>
 
     <div class="search-container" :class="{ open: isSearchOpen }">
       <div class="search-input-container">
-        <input v-model.trim="keyword" @keydown.enter="handleSearchIconClick" />
-        <font-awesome-icon
-          class="search-icon"
-          size="lg"
-          :icon="['fas', 'magnifying-glass']"
-          @click="handleSearchIconClick"
+        <input
+          :value="keyword"
+          @input="handleInputChange"
+          placeholder="원하는 여행지를 검색하고 주변 영상을 감상하세요!"
         />
+        <font-awesome-icon class="search-icon" size="lg" :icon="['fas', 'magnifying-glass']" />
       </div>
       <div class="search-result-container">
-        <div class="search-result-list">
+        <div v-show="isSearchOpen" class="search-result-list">
           <div
             class="search-result-item"
             v-for="place in searchedPlaces"
@@ -28,14 +27,16 @@
             @click="handleSearchedPlaceClick(place)"
           >
             <div>{{ place.place_name }}</div>
-            <div>{{ place.road_address_name }}</div>
+            <div class="item-address">{{ place.road_address_name }}</div>
           </div>
         </div>
+        <VideoBox v-show="!isSearchOpen" />
       </div>
     </div>
   </div>
 </template>
 <script setup>
+import VideoBox from '@/components/VideoBox.vue'
 import { ref, onMounted } from 'vue'
 
 const { VITE_KAKAO_MAP_KEY } = import.meta.env
@@ -55,17 +56,17 @@ const handleGPSIconClick = async () => {
   try {
     const { lat, lng } = await getUserCoord()
     loadKakaoMap(mapContainer.value, lat, lng)
+    isSearchOpen.value = false
   } catch (err) {
     console.error('위치 정보를 가져오는 데 실패했습니다. error: ', err)
     loadKakaoMap(mapContainer.value)
   }
 }
 
-const handleSearchIconClick = () => {
-  if (keyword.value) {
-    searchPlaces(keyword.value)
-    isSearchOpen.value = true
-  }
+const handleInputChange = (event) => {
+  keyword.value = event.target.value
+  searchPlaces(keyword.value)
+  isSearchOpen.value = true
 }
 
 const handleSearchedPlaceClick = (place) => {
@@ -242,15 +243,14 @@ onMounted(async () => {
 }
 
 .search-container {
-  position: absolute;
-  bottom: 4rem;
+  /* position: absolute; */
+  /* bottom: 4rem; */
   width: 100%;
-  z-index: 1;
-  transition: transform 0.6s ease-in-out;
+  /* transition: transform 0.6s ease-in-out; */
 
-  &.open {
+  /* &.open {
     transform: translateY(-40vh);
-  }
+  } */
 }
 
 .search-input-container {
@@ -283,15 +283,15 @@ input:focus {
 }
 
 .search-result-container {
-  position: absolute;
   width: 100%;
-  height: 40vh;
-  background-color: white;
+  background-color: #e7c4ff40;
+  display: flex;
+  flex-direction: column;
+  height: calc(50vh - 7rem);
 }
 
 .search-result-list {
   overflow-y: auto;
-  max-height: 40vh;
 }
 
 .search-result-list::-webkit-scrollbar {
@@ -300,10 +300,16 @@ input:focus {
 
 .search-result-item {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   height: 4rem;
-  padding: 1rem;
-  cursor: pointer;
   border-bottom: 1px solid #f0f0f0;
+  padding: 0rem 1rem;
+  cursor: pointer;
+}
+
+.item-address {
+  font-size: 0.8rem;
+  font-family: 'Nanum Gothic Regular';
 }
 </style>

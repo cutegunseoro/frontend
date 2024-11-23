@@ -23,7 +23,7 @@ const videos = ref([
 ])
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .video-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -43,12 +43,12 @@ const videos = ref([
   box-sizing: border-box;
   aspect-ratio: 9 / 16; /* 세로 동영상 비율 */
   width: 100%;
-  background-color: lightgray;
+  background-color: colors.$primary-color;
   transition: background-color 0.3s ease;
   cursor: pointer;
 }
 
 .video-card:hover {
-  background-color: darkgray;
+  background-color: colors.$secondary-color;
 }
 </style>

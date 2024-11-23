@@ -20,7 +20,7 @@
                 @click="handlePlaceClick(place)"
               >
                 <div>{{ place.place_name }}</div>
-                <div>{{ place.road_address_name }}</div>
+                <div class="item-address">{{ place.road_address_name }}</div>
               </div>
             </div>
           </div>
@@ -203,6 +203,11 @@ input:focus {
   padding: 0rem 1rem;
   cursor: pointer;
   border-bottom: 1px solid #f0f0f0;
+}
+
+.item-address {
+  font-size: 0.8rem;
+  font-family: 'Nanum Gothic Regular';
 }
 
 .next-btn {
