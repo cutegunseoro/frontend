@@ -7,10 +7,10 @@
       </div>
     </div>
 
-    <div ref="mapContainer" style="width: 100%; height: 50vh; position: relative"></div>
+    <div ref="mapContainer" style="width: 100%; height: 100vh"></div>
 
-    <div class="search-container" :class="{ open: isSearchOpen }">
-      <div class="search-input-container">
+    <div class="search-container" :class="{ open: isHidden }">
+      <div class="search-input-container" ref="searchInputContainer" @mousedown="startDrag">
         <input
           :value="keyword"
           @input="handleInputChange"
@@ -51,12 +51,41 @@ let markers = [] // 마커들을 저장할 배열
 let geocoder = null
 
 const isSearchOpen = ref(false)
+const isHidden = ref(false)
+
+let startY = 0
+let startTop = 0
+
+const startDrag = (e) => {
+  startY = e.clientY
+  startTop = e.target.getBoundingClientRect().top
+
+  const onMouseMove = (moveEvent) => {
+    const deltaY = moveEvent.clientY - startY
+    const currentTop = startTop + deltaY
+
+    if (currentTop > startTop + 20) {
+      isHidden.value = true
+    } else if (currentTop < startTop - 20) {
+      isHidden.value = false
+    }
+  }
+
+  const onMouseUp = () => {
+    window.removeEventListener('mousemove', onMouseMove)
+    window.removeEventListener('mouseup', onMouseUp)
+  }
+
+  window.addEventListener('mousemove', onMouseMove)
+  window.addEventListener('mouseup', onMouseUp)
+}
 
 const handleGPSIconClick = async () => {
   try {
     const { lat, lng } = await getUserCoord()
     loadKakaoMap(mapContainer.value, lat, lng)
     isSearchOpen.value = false
+    isHidden.value = false
   } catch (err) {
     console.error('위치 정보를 가져오는 데 실패했습니다. error: ', err)
     loadKakaoMap(mapContainer.value)
@@ -143,7 +172,8 @@ const addMarker = (place) => {
   markers.push(marker)
 
   // 지도의 중심을 마커 위치로 이동
-  mapInstance.setCenter(position)
+  const adjustedPosition = new window.kakao.maps.LatLng(place.y - 0.0015, place.x)
+  mapInstance.setCenter(adjustedPosition)
   selectedPlace.value = place.address_name
   console.log(place)
 }
@@ -243,14 +273,15 @@ onMounted(async () => {
 }
 
 .search-container {
-  /* position: absolute; */
-  /* bottom: 4rem; */
+  position: absolute;
+  top: 50vh;
+  z-index: 1;
   width: 100%;
-  /* transition: transform 0.6s ease-in-out; */
+  transition: transform 0.6s ease-in-out;
 
-  /* &.open {
-    transform: translateY(-40vh);
-  } */
+  &.open {
+    transform: translateY(calc(50vh - 7rem));
+  }
 }
 
 .search-input-container {
@@ -284,7 +315,7 @@ input:focus {
 
 .search-result-container {
   width: 100%;
-  background-color: #e7c4ff40;
+  background-color: #f5e8ff;
   display: flex;
   flex-direction: column;
   height: calc(50vh - 7rem);

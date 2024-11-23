@@ -21,3 +21,7 @@ body {
   color: colors.$text-color-primary;
   overflow: hidden;
 }
+
+* {
+  user-select: none;
+}
