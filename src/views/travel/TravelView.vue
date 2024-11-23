@@ -58,46 +58,37 @@ const videos = ref([
   {
     id: 2,
     title: '영상 2',
-    lat: 37.501311,
-    lng: 127.039604,
+    lat: 37.502811,
+    lng: 127.041204,
     videoUrl: '',
-    timestamp: '2024-11-26 14:20',
+    timestamp: '2024-11-26 14:30',
   },
   {
     id: 3,
     title: '영상 3',
-    lat: 37.501311,
-    lng: 127.039604,
+    lat: 37.503911,
+    lng: 127.042904,
     videoUrl: '',
-    timestamp: '2024-11-26 14:20',
+    timestamp: '2024-11-26 14:40',
   },
   {
     id: 4,
     title: '영상 4',
-    lat: 37.501311,
-    lng: 127.039604,
+    lat: 37.504711,
+    lng: 127.041404,
     videoUrl: '',
-    timestamp: '2024-11-26 14:20',
-  },
-  {
-    id: 5,
-    title: '영상 5',
-    lat: 37.501311,
-    lng: 127.039604,
-    videoUrl: '',
-    timestamp: '2024-11-26 14:20',
+    timestamp: '2024-11-26 14:50',
   },
   {
     id: 6,
     title: '영상 6',
-    lat: 37.501311,
-    lng: 127.039604,
+    lat: 37.505811,
+    lng: 127.044404,
     videoUrl: '',
-    timestamp: '2024-11-26 14:20',
+    timestamp: '2024-11-26 15:10',
   },
 ])
 
-// const searchedPlaces = ref([])
 const mapContainer = ref(null)
 
 let mapInstance = null // 지도 인스턴스 저장
@@ -117,14 +108,8 @@ const loadKakaoMap = (container, lat = 37.501311, lng = 127.039604) => {
 
       mapInstance = new window.kakao.maps.Map(container, options)
 
-      // 사용자 위치 마커 추가
-      const markerPosition = new window.kakao.maps.LatLng(lat, lng)
-      const marker = new window.kakao.maps.Marker({
-        position: markerPosition,
-      })
-
-      marker.setMap(mapInstance)
-      markers.push(marker)
+      addAllMarkers()
+      setMapBounds()
     })
   }
 }
@@ -143,7 +128,27 @@ const addMarker = (place) => {
   mapInstance.setCenter(position)
 }
 
-// 컴포넌트가 마운트되면 사용자 위치에 맵 로딩
+const addAllMarkers = () => {
+  if (!mapInstance) return
+
+  videos.value.forEach((video) => {
+    const place = { y: video.lat, x: video.lng }
+    addMarker(place)
+  })
+}
+
+const setMapBounds = () => {
+  if (!mapInstance || markers.length === 0) return
+
+  const bounds = new window.kakao.maps.LatLngBounds()
+
+  markers.forEach((marker) => {
+    bounds.extend(marker.getPosition())
+  })
+
+  mapInstance.setBounds(bounds)
+}
+
 onMounted(async () => {
   loadKakaoMap(mapContainer.value)
 })
@@ -208,6 +213,7 @@ onMounted(async () => {
 .video-list {
   height: 50vh;
   overflow-y: auto;
+  padding-bottom: 8rem;
 }
 
 .video-list::-webkit-scrollbar {
