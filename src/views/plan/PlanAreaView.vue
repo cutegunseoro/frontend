@@ -8,6 +8,7 @@
         <input
           :value="keyword"
           @input="handleInputChange"
+          @keydown.enter="handleSearchIconClick"
           placeholder="어디로 여행을 떠나시나요?"
         />
         <ScrollArea v-show="keyword" className="rounded-lg p-4 scroll-area">
@@ -26,7 +27,12 @@
           </div>
         </ScrollArea>
       </div>
-      <font-awesome-icon class="search-icon" size="lg" :icon="['fas', 'magnifying-glass']" />
+      <font-awesome-icon
+        @click="handleSearchIconClick"
+        class="search-icon"
+        size="lg"
+        :icon="['fas', 'magnifying-glass']"
+      />
     </div>
     <div v-show="markers.length > 0" class="next-btn" @click="handleNextIconClick">
       <font-awesome-icon :icon="['fas', 'arrow-right']" />
@@ -57,6 +63,11 @@ let markers = [] // 마커들을 저장할 배열
 const handleInputChange = (event) => {
   keyword.value = event.target.value
   showSearchedPlaces()
+}
+
+const handleSearchIconClick = () => {
+  if (searchedPlaces.value.length == 0) return
+  handlePlaceClick(searchedPlaces.value[0])
 }
 
 const showSearchedPlaces = () => {
