@@ -14,9 +14,15 @@
         <input
           :value="keyword"
           @input="handleInputChange"
+          @keydown.enter="handleSearchIconClick"
           placeholder="원하는 여행지를 검색하고 주변 영상을 감상하세요!"
         />
-        <font-awesome-icon class="search-icon" size="lg" :icon="['fas', 'magnifying-glass']" />
+        <font-awesome-icon
+          @click="handleSearchIconClick"
+          class="search-icon"
+          size="lg"
+          :icon="['fas', 'magnifying-glass']"
+        />
       </div>
       <div class="search-result-container">
         <div v-show="isSearchOpen" class="search-result-list">
@@ -96,6 +102,11 @@ const handleInputChange = (event) => {
   keyword.value = event.target.value
   searchPlaces(keyword.value)
   isSearchOpen.value = true
+}
+
+const handleSearchIconClick = () => {
+  if (searchedPlaces.value.length == 0) return
+  handleSearchedPlaceClick(searchedPlaces.value[0])
 }
 
 const handleSearchedPlaceClick = (place) => {
