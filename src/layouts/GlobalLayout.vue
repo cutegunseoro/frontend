@@ -1,6 +1,6 @@
 <template>
   <div :class="isMobile ? '' : 'layout-container'">
-    <AppHeader v-if="isHistoryView || isProfileView" />
+    <AppHeader v-if="isHistoryView || isProfileView || isPlanView" />
     <slot></slot>
     <AppFooter v-if="!(isIntroView || isRecordView || isAuthView)" />
   </div>
@@ -16,6 +16,7 @@ const route = useRoute()
 const isMobile = ref(false)
 
 const isIntroView = computed(() => route.path === '/')
+const isPlanView = computed(() => ['/plan', '/plan/period'].includes(route.path))
 const isAuthView = computed(() => ['/login', '/regist'].includes(route.path))
 const isRecordView = computed(() => ['/record', '/playback'].includes(route.path))
 const isHistoryView = computed(() => ['history', 'historyDetail'].includes(route.name))

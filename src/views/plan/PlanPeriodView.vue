@@ -1,10 +1,9 @@
 <template>
   <div class="planperiod-view">
     <header>여행 기간이 어떻게 되시나요?</header>
-    <RangeCalendar
-      v-model="modelValue"
-      @update:modelValue="updateModelValue"
-    />
+    <div class="spacer"></div>
+    <RangeCalendar v-model="modelValue" @update:modelValue="updateModelValue" />
+    <div class="spacer"></div>
     <div v-show="modelValue.end" class="next-btn" @click="handleNextIconClick">
       <font-awesome-icon :icon="['fas', 'arrow-right']" />
     </div>
@@ -13,23 +12,17 @@
       <div class="period-container">
         <div class="date-wrapper">
           <div class="date">
-            {{ modelValue.start.year }} -
-            {{ modelValue.start.month }} -
+            {{ modelValue.start.year }} - {{ modelValue.start.month }} -
             {{ modelValue.start.day }}
           </div>
-          <div>
-            부터
-          </div>
+          <div>부터</div>
         </div>
         <div class="date-wrapper">
           <div class="date">
-            {{ modelValue.end.year }} -
-            {{ modelValue.end.month }} -
+            {{ modelValue.end.year }} - {{ modelValue.end.month }} -
             {{ modelValue.end.day }}
           </div>
-          <div>
-            까지
-          </div>
+          <div>까지</div>
         </div>
       </div>
       <div class="area-wrapper">
@@ -57,13 +50,11 @@ const handleNextIconClick = () => {
 }
 
 const handleModalVisibility = (newVisibility) => {
-  showModal.value = newVisibility;
-};
-
+  showModal.value = newVisibility
+}
 </script>
 
 <style scoped lang="scss">
-
 .planperiod-view {
   display: flex;
   flex-direction: column;
@@ -71,15 +62,15 @@ const handleModalVisibility = (newVisibility) => {
   justify-content: center;
   position: relative;
   width: 100%;
-  height: calc(100vh - 4rem);
+  height: calc(100vh - 8rem);
 }
 
 header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   font-size: 1.2rem;
-  height: 6rem;
+}
+
+.spacer {
+  height: 3rem;
 }
 
 .period-container {

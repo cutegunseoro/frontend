@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!currentTravel" class="playback-view">
+  <div v-if="!currentTravel" class="plan-view">
     <div>현재 진행 중인 여행이 없습니다 . . .</div>
     <button class="plan-btn" @click="handleAddClick">여행 일정 추가</button>
   </div>
@@ -20,18 +20,18 @@ const handleAddClick = () => {
 </script>
 
 <style scoped lang="scss">
-.playback-view {
+.plan-view {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: calc(100vh - 8rem);
   width: 100%;
 }
 
 button {
   position: absolute;
-  bottom: 5rem;
+  bottom: 1rem;
   z-index: 2;
   display: flex;
   justify-content: center;

@@ -40,7 +40,7 @@ const props = defineProps({ visible: Boolean })
   background-color: white;
   padding: 1rem;
   border-radius: 1rem;
-  width: 70%;
+  width: 16rem;
   box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
