@@ -1,5 +1,12 @@
 <template>
   <div class="home-view">
+    <div class="map-header">
+      <div v-show="selectedPlace" class="address">{{ selectedPlace }}</div>
+      <div class="gps-icon-wrapper" @click="handleGPSIconClick">
+        <font-awesome-icon class="gps-icon" size="lg" :icon="['fas', 'location-arrow']" />
+      </div>
+    </div>
+
     <div ref="mapContainer" style="width: 100%; height: 100vh; position: relative"></div>
 
     <div class="search-container" :class="{ open: isSearchOpen }">
@@ -35,12 +42,24 @@ const { VITE_KAKAO_MAP_KEY } = import.meta.env
 
 const keyword = ref('')
 const searchedPlaces = ref([])
+const selectedPlace = ref(null)
 const mapContainer = ref(null)
 
 let mapInstance = null // 지도 인스턴스 저장
 let markers = [] // 마커들을 저장할 배열
+let geocoder = null
 
 const isSearchOpen = ref(false)
+
+const handleGPSIconClick = async () => {
+  try {
+    const { lat, lng } = await getUserCoord()
+    loadKakaoMap(mapContainer.value, lat, lng)
+  } catch (err) {
+    console.error('위치 정보를 가져오는 데 실패했습니다. error: ', err)
+    loadKakaoMap(mapContainer.value)
+  }
+}
 
 const handleSearchIconClick = () => {
   if (keyword.value) {
@@ -83,17 +102,31 @@ const loadKakaoMap = (container, lat = 37.501311, lng = 127.039604) => {
       }
 
       mapInstance = new window.kakao.maps.Map(container, options)
+      geocoder = new window.kakao.maps.services.Geocoder()
 
-      // 사용자 위치 마커 추가
-      const markerPosition = new window.kakao.maps.LatLng(lat, lng)
-      const marker = new window.kakao.maps.Marker({
-        position: markerPosition,
+      const place = { y: lat, x: lng }
+
+      getAddressFromCoords(lat, lng).then((address) => {
+        place.address_name = address
+        addMarker(place)
       })
-
-      marker.setMap(mapInstance)
-      markers.push(marker)
     })
   }
+}
+
+// 위도, 경도를 통해 주소를 가져오는 함수
+const getAddressFromCoords = (lat, lng) => {
+  return new Promise((resolve, reject) => {
+    const coord = new window.kakao.maps.LatLng(lat, lng)
+
+    geocoder.coord2Address(coord.getLng(), coord.getLat(), (result, status) => {
+      if (status === window.kakao.maps.services.Status.OK) {
+        resolve(result[0].address.address_name)
+      } else {
+        reject('주소 변환에 실패했습니다.')
+      }
+    })
+  })
 }
 
 const addMarker = (place) => {
@@ -110,6 +143,8 @@ const addMarker = (place) => {
 
   // 지도의 중심을 마커 위치로 이동
   mapInstance.setCenter(position)
+  selectedPlace.value = place.address_name
+  console.log(place)
 }
 
 // 기존에 있던 마커들 제거
@@ -130,9 +165,6 @@ const searchPlaces = (keyword) => {
 
       data.forEach((place) => {
         searchedPlaces.value.push(place)
-
-        // 검색된 장소의 이름을 콘솔에 출력
-        console.log(place)
       })
     } else {
       console.error('장소 검색에 실패했습니다.')
@@ -161,6 +193,52 @@ onMounted(async () => {
 .home-view {
   position: relative;
   width: 100%;
+}
+
+.map-header {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  top: 1rem;
+  z-index: 2;
+}
+
+.address {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2rem;
+  background-color: colors.$primary-color;
+  border-radius: 1rem;
+  padding: 0rem 1rem;
+}
+
+.gps-icon-wrapper {
+  position: absolute;
+  top: 0;
+  right: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2rem;
+  width: 2rem;
+  background-color: colors.$primary-color;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.gps-icon-wrapper:hover {
+  transform: scale(1.1);
+}
+
+.gps-icon-wrapper:active {
+  transform: scale(0.9);
+}
+
+.gps-icon {
+  color: colors.$highlight-color;
 }
 
 .search-container {

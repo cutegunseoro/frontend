@@ -49,7 +49,6 @@ const handleLogout = () => {
   memberStore.logout()
   router.replace('/')
 }
-
 </script>
 
 <style scoped lang="scss">
