@@ -93,6 +93,7 @@ const mapContainer = ref(null)
 
 let mapInstance = null // 지도 인스턴스 저장
 let markers = [] // 마커들을 저장할 배열
+let polyline = null
 
 const loadKakaoMap = (container, lat = 37.501311, lng = 127.039604) => {
   const script = document.createElement('script')
@@ -110,6 +111,7 @@ const loadKakaoMap = (container, lat = 37.501311, lng = 127.039604) => {
 
       addAllMarkers()
       setMapBounds()
+      drawPolyline()
     })
   }
 }
@@ -147,6 +149,22 @@ const setMapBounds = () => {
   })
 
   mapInstance.setBounds(bounds)
+}
+
+const drawPolyline = () => {
+  if (!mapInstance || markers.length === 0) return
+
+  const path = markers.map((marker) => marker.getPosition())
+
+  polyline = new window.kakao.maps.Polyline({
+    path: path,
+    strokeWeight: 2,
+    strokeColor: '#874ead',
+    strokeOpacity: 0.7,
+    strokeStyle: 'solid',
+  })
+
+  polyline.setMap(mapInstance)
 }
 
 onMounted(async () => {
