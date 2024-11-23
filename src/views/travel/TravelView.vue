@@ -17,7 +17,16 @@
       <div ref="mapContainer" style="width: 100%; height: 40vh; border: 1px solid #f0f0f0"></div>
 
       <div class="video-list">
-        <div>비디오!</div>
+        <div v-for="video in videos" class="video-item" :key="video.id">
+          <img class="video-img" :src="TravelImage" />
+          <div class="video-info">
+            <div>{{ video.title }}</div>
+            <div class="video-date">{{ video.timestamp }}</div>
+          </div>
+          <div class="travel-icon-container">
+            <font-awesome-icon class="travel-icon delete-icon" :icon="['fas', 'trash']" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -39,18 +48,53 @@ const travelItem = ref({
 
 const videos = ref([
   {
+    id: 1,
     title: '영상 1',
-    lat: 0,
-    lng: 0,
+    lat: 37.501311,
+    lng: 127.039604,
+    videoUrl: '',
+    timestamp: '2024-11-26 14:20',
   },
-  { title: '영상 2' },
-  { title: '영상 3' },
-  { title: '영상 4' },
-  { title: '영상 5' },
-  { title: '영상 6' },
-  { title: '영상 7' },
-  { title: '영상 8' },
-  { title: '영상 9' },
+  {
+    id: 2,
+    title: '영상 2',
+    lat: 37.501311,
+    lng: 127.039604,
+    videoUrl: '',
+    timestamp: '2024-11-26 14:20',
+  },
+  {
+    id: 3,
+    title: '영상 3',
+    lat: 37.501311,
+    lng: 127.039604,
+    videoUrl: '',
+    timestamp: '2024-11-26 14:20',
+  },
+  {
+    id: 4,
+    title: '영상 4',
+    lat: 37.501311,
+    lng: 127.039604,
+    videoUrl: '',
+    timestamp: '2024-11-26 14:20',
+  },
+  {
+    id: 5,
+    title: '영상 5',
+    lat: 37.501311,
+    lng: 127.039604,
+    videoUrl: '',
+    timestamp: '2024-11-26 14:20',
+  },
+  {
+    id: 6,
+    title: '영상 6',
+    lat: 37.501311,
+    lng: 127.039604,
+    videoUrl: '',
+    timestamp: '2024-11-26 14:20',
+  },
 ])
 
 // const searchedPlaces = ref([])
@@ -159,5 +203,63 @@ onMounted(async () => {
 .travel-period {
   font-size: 0.8rem;
   font-family: 'Nanum Gothic Regular';
+}
+
+.video-list {
+  height: 50vh;
+  overflow-y: auto;
+}
+
+.video-list::-webkit-scrollbar {
+  display: none;
+}
+
+.video-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.video-img {
+  height: 70px;
+  width: 110px;
+  object-fit: cover;
+}
+
+.video-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  padding: 0.4rem 1rem;
+}
+
+.video-date {
+  font-size: 0.8rem;
+  font-family: 'Nanum Gothic Regular';
+}
+
+.travel-icon-container {
+  display: flex;
+  align-items: flex-end;
+  padding: 0.4rem 1rem;
+}
+
+.travel-icon {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.travel-icon:hover {
+  transform: scale(1.2);
+}
+
+.travel-icon:active {
+  transform: scale(0.9);
+}
+
+.delete-icon {
+  color: red;
 }
 </style>

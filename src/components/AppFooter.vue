@@ -8,8 +8,8 @@
     <router-link
       to="/plan"
       class="no-style"
-      active-class="plan-active"
-      :class="{ 'plan-active': $route.path.startsWith('/plan') }"
+      active-class="link-active"
+      :class="{ 'link-active': $route.path.startsWith('/plan') }"
     >
       <font-awesome-icon size="lg" :icon="['fas', 'calendar-plus']" />
       <div class="footer-text">plan</div>
@@ -20,7 +20,12 @@
       <div class="footer-text">record</div>
     </router-link>
 
-    <router-link to="/history" class="no-style">
+    <router-link
+      to="/history"
+      class="no-style"
+      active-class="link-active"
+      :class="{ 'link-active': $route.path.startsWith('/history') }"
+    >
       <font-awesome-icon size="lg" :icon="['fas', 'clock-rotate-left']" />
       <div class="footer-text">history</div>
     </router-link>
@@ -76,7 +81,7 @@ a.router-link-active {
   color: colors.$highlight-color; /* 활성화된 링크의 색상 */
 }
 
-a.plan-active {
+a.link-active {
   color: colors.$highlight-color;
 }
 </style>
