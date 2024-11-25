@@ -16,6 +16,11 @@
 
       <div ref="mapContainer" style="width: 100%; height: 40vh; border: 1px solid #f0f0f0"></div>
 
+      <div class="travelog">
+        <div>총 {{ videos.length }}개의 동영상</div>
+        <font-awesome-icon class="travel-icon" size="lg" :icon="['fas', 'circle-play']" />
+      </div>
+
       <div class="video-list">
         <div v-for="video in videos" class="video-item" :key="video.id">
           <img class="video-img" :src="TravelImage" />
@@ -228,8 +233,17 @@ onMounted(async () => {
   font-family: 'Nanum Gothic Regular';
 }
 
+.travelog {
+  display: flex;
+  height: 3rem;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 0.8rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
 .video-list {
-  height: 50vh;
+  height: calc(60vh - 8rem);
   overflow-y: auto;
   padding-bottom: 8rem;
 }
@@ -243,6 +257,7 @@ onMounted(async () => {
   justify-content: space-between;
   padding: 0.6rem 0rem;
   border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
 }
 
 .video-img {
