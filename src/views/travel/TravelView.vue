@@ -39,8 +39,22 @@
 
 <script setup>
 import TravelImage from '@/assets/images/Suwon.jpg'
-const { VITE_KAKAO_MAP_KEY } = import.meta.env
 import { ref, onMounted } from 'vue'
+import { getVideosByTravel } from '@/api/video'
+import { useRoute } from 'vue-router'
+
+const { VITE_KAKAO_MAP_KEY } = import.meta.env
+const route = useRoute()
+const travelId = ref(route.params.travelId)
+
+const fetchVideosByTravel = async () => {
+  await getVideosByTravel(travelId, (response) => {
+    videos.value = response.data.videos
+    console.log(videos.value)
+  }, (err) => {
+    console.log('해당 여행의 비디오들을 불러오는 데 실패했습니다. err: ' + err)
+  })
+}
 
 const travelItem = ref({
   id: 1,
@@ -174,6 +188,7 @@ const drawPolyline = () => {
 
 onMounted(async () => {
   loadKakaoMap(mapContainer.value)
+  fetchVideosByTravel()
 })
 </script>
 
