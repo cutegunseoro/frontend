@@ -4,7 +4,7 @@
       <slot></slot>
       <div class="modal-btn-container">
         <button class="modal-btn cancel" @click="closeModal">취소</button>
-        <button class="modal-btn">등록</button>
+        <button class="modal-btn" @click="handleRegisterClick">등록</button>
       </div>
     </div>
   </div>
@@ -15,8 +15,15 @@ const closeModal = () => {
   emits('update:visible', false)
 }
 
-const emits = defineEmits(['update:visible'])
-const props = defineProps({ visible: Boolean })
+const handleRegisterClick = () => {
+  emits('register')
+  closeModal();
+}
+
+const emits = defineEmits(['update:visible', 'register'])
+const props = defineProps({
+  visible: Boolean,
+})
 </script>
 
 <style scoped lang="scss">

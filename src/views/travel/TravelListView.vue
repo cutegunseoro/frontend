@@ -2,7 +2,7 @@
   <div class="calendar-view">
     <div class="travel-container">
       <div class="travel-header">
-        <div>여행 기록</div>
+        <div>나의 여행 기록</div>
         <div class="plan-btn" @click="handlePlanClick">일정 추가</div>
       </div>
       <div class="travel-list">

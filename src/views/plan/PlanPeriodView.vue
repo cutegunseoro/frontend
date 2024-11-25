@@ -8,7 +8,14 @@
       <font-awesome-icon :icon="['fas', 'arrow-right']" />
     </div>
 
-    <AlertDialog :visible="showModal" @update:visible="handleModalVisibility">
+    <AlertDialog
+      :visible="showModal"
+      @update:visible="handleModalVisibility"
+      @register="handleRegister"
+    >
+      <div class="title-container">
+        <input v-model="title" placeholder="여행의 이름은?"/>
+      </div>
       <div class="period-container">
         <div class="date-wrapper">
           <div class="date">
@@ -26,8 +33,8 @@
         </div>
       </div>
       <div class="area-wrapper">
-        <div class="area">수원</div>
-        으로 여행을 다녀올게요!
+        <div class="area">{{ city }}</div>
+        로 여행을 다녀올게요!
       </div>
     </AlertDialog>
   </div>
@@ -37,9 +44,42 @@
 import RangeCalendar from '@/components/ui/range-calendar/RangeCalendar.vue'
 import AlertDialog from '@/components/AlertDialog.vue'
 import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { createTravel } from '@/api/travel'
 
+const router = useRouter()
+const route = useRoute()
+const city = route.query.city
+
+const title = ref('')
 const modelValue = ref({ start: '', end: '' })
 const showModal = ref(false)
+
+const handleRegister = async () => {
+  const startDateTime = new Date(modelValue.value.start.year, modelValue.value.start.month - 1, modelValue.value.start.day).toISOString()
+  const endDateTime = new Date(modelValue.value.end.year, modelValue.value.end.month - 1, modelValue.value.end.day).toISOString()
+
+  const payload = {
+    title: title.value,
+    city: city,
+    startDateTime,
+    endDateTime,
+  }
+
+  console.log(payload)
+
+  // 여행 일정 등록
+  await createTravel(payload, (response) => {
+    if (response.status === 200) {
+      router.push('/history')
+    } else {
+      console.log('여행 일정 등록에 실패하였습니다.')
+    }
+  }, (err) => {
+    console.log('여행 일정 등록에 실패하였습니다. err: ' + err)
+  })
+  // router.push('/history')
+}
 
 const updateModelValue = (newValue) => {
   modelValue.value = newValue
@@ -71,6 +111,32 @@ header {
 
 .spacer {
   height: 3rem;
+}
+.title-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+input {
+  display: flex;
+  align-items: center;
+  width: 10rem;
+  height: 2rem;
+  border-radius: 1rem;
+  padding: 0rem 1rem;
+  margin: 0.4rem 0rem;
+  font-size: 0.8rem;
+  border: 1px solid lightgray;
+  font-family: inherit;
+  color: inherit;
+  box-sizing: border-box;
+}
+
+input:focus {
+  outline: none;
+  border: 0.1rem solid colors.$primary-color;
 }
 
 .period-container {

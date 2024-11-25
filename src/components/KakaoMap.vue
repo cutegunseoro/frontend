@@ -33,7 +33,7 @@
             @click="handleSearchedPlaceClick(place)"
           >
             <div>{{ place.place_name }}</div>
-            <div class="item-address">{{ place.road_address_name }}</div>
+            <div class="item-address">{{ place.address_name }}</div>
           </div>
         </div>
         <VideoBox v-show="!isSearchOpen" />

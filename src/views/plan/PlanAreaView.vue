@@ -21,7 +21,7 @@
                 @click="handlePlaceClick(place)"
               >
                 <div>{{ place.place_name }}</div>
-                <div class="item-address">{{ place.road_address_name }}</div>
+                <div class="item-address">{{ place.address_name }}</div>
               </div>
             </div>
           </div>
@@ -53,6 +53,7 @@ const goBack = () => {
   router.go(-1)
 }
 
+const city = ref('')
 const keyword = ref('')
 const searchedPlaces = ref([])
 const mapContainer = ref(null)
@@ -78,12 +79,16 @@ const showSearchedPlaces = () => {
 
 const handlePlaceClick = (place) => {
   addMarker(place)
+  city.value = extractCityFromAddress(place.address_name)
 
   keyword.value = ''
 }
 
 const handleNextIconClick = () => {
-  router.push('/plan/period')
+  router.push({
+    path: '/plan/period',
+    query: { city: city.value }
+  })
 }
 
 const loadKakaoMap = (container, lat = 36.5, lng = 127.8) => {
@@ -134,14 +139,34 @@ const searchPlaces = (keyword) => {
 
       data.forEach((place) => {
         searchedPlaces.value.push(place)
-
-        // 검색된 장소의 이름을 콘솔에 출력
-        console.log(place)
       })
     } else {
       console.error('장소 검색에 실패했습니다.')
     }
   })
+}
+
+// 주소에서 도시명 추출하는 함수
+const extractCityFromAddress = (address) => {
+  if (!address) return ''
+
+  // 서울, 대전, 부산 등 특별시, 광역시 처리
+  const specialCities = ['서울', '대전', '부산', '대구', '인천', '광주', '울산', '세종']
+  for (let city of specialCities) {
+    if (address.includes(city)) {
+      return city
+    }
+  }
+
+  // 주소에서 '시', '군', '구'를 포함하는 부분을 찾는다
+  const regex = /([가-힣]+(시|군|구))/g
+  const matches = address.match(regex)
+
+  if (matches && matches.length > 0) {
+    return matches[0].replace(/(시|군|구)$/, '') // '시', '군', '구'를 제거하고 반환
+  }
+
+  return ''
 }
 
 // 컴포넌트가 마운트되면 사용자 위치에 맵 로딩
