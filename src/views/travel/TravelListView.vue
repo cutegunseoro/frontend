@@ -31,9 +31,13 @@
 
 <script setup>
 import TravelImage from '@/assets/images/Suwon.jpg'
+import { getTravelsByUser } from '@/api/travel'
 
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useMemberStore } from '@/stores/member'
+
+const memberStore = useMemberStore()
 
 const router = useRouter()
 
@@ -43,6 +47,15 @@ const handlePlanClick = () => {
 
 const handleVideoIconClick = (travelId) => {
   router.push(`/history/${travelId}`)
+}
+
+const fetchTravelList = async () => {
+  const publicId = memberStore.memberInfo.value?.publicId
+  await getTravelsByUser(publicId, (response) => {
+    travelList.value = response.data.travels
+  }, (err) => {
+    console.log('여행 일정을 불러오는 데 실패했습니다. err: ' + err)
+  })
 }
 
 const travelList = ref([
@@ -87,6 +100,10 @@ const travelList = ref([
     endDatetime: '2024-11-27',
   },
 ])
+
+onMounted(async () => {
+  await fetchTravelList()
+})
 </script>
 
 <style scoped lang="scss">
