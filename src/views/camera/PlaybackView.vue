@@ -11,6 +11,7 @@
         @click="playVideo"
       />
       <font-awesome-icon
+        v-if="videoUrl"
         class="camera-icon"
         size="lg"
         :icon="['fas', 'paper-plane']"
@@ -39,7 +40,7 @@ import { useRouter, useRoute } from 'vue-router'
 import axios from 'axios'
 import AlertDialog from '@/components/AlertDialog.vue'
 // import { uploadVideo } from '@/api/video'
-import { createVideoInfo } from '@/api/video'
+import { createVideoInfo, getVideo } from '@/api/video'
 import { useTravelStore } from '@/stores/travel'
 
 const travelStore = useTravelStore()
@@ -50,9 +51,20 @@ const route = useRoute()
 
 const videoElement = ref(null)
 const videoUrl = ref(null)
+const videoId = ref(null)
 
 const isPlaying = ref(false)
 const showModal = ref(false)
+
+const fetchVideo = async () => {
+  await getVideo(videoId, (response) => {
+    if (response.status === 200) {
+      videoUrl.value = response.data.videoUrl
+    }
+  }, (err) => {
+    console.log("동영상을 불러오는 데 실패하였습니다. err: " + err)
+  })
+}
 
 const handleModalVisibility = (newVisibility) => {
   showModal.value = newVisibility
@@ -133,9 +145,12 @@ const getUserCoord = () => {
   })
 }
 
-onMounted(() => {
+onMounted(async () => {
   if (route.query.videoUrl) {
     videoUrl.value = route.query.videoUrl
+  } else if (route.query.id) {
+    videoId.value = route.query.videoId
+    await fetchVideo()
   } else {
     console.log('No video URL passed')
   }

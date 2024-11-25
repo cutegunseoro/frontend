@@ -22,7 +22,7 @@
       </div>
 
       <div class="video-list">
-        <div v-for="video in videos" class="video-item" :key="video.id" @click="handleVideoClick(video.videoUrl)">
+        <div v-for="video in videos" class="video-item" :key="video.id" @click="handleVideoClick(video.id)">
           <img class="video-img" :src="TravelImage" />
           <div class="video-info">
             <div>{{ video.title }}</div>
@@ -57,8 +57,8 @@ const fetchVideosByTravel = async () => {
   })
 }
 
-const handleVideoClick = (videoUrl) => {
-  router.push({ name: 'playback', query: { videoUrl } })
+const handleVideoClick = (id) => {
+  router.push({ name: 'playback', query: { id } })
 }
 
 const travelItem = ref({

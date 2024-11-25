@@ -1,7 +1,7 @@
 <template>
   <!-- 해당 유저의 동영상 -->
   <div class="video-container">
-    <div v-for="video in videos" :key="video.title" class="video-card" @click="handleVideoClick(video.videoUrl)">
+    <div v-for="video in videos" :key="video.title" class="video-card" @click="handleVideoClick(video.id)">
       {{ video.title }}
     </div>
   </div>
@@ -21,8 +21,8 @@ const router = useRouter()
 
 // const videos = ref(props.videos)
 
-const handleVideoClick = (videoUrl) => {
-  router.push({ name: 'playback', query: { videoUrl } })
+const handleVideoClick = (id) => {
+  router.push({ name: 'playback', query: { id } })
 }
 
 const videos = ref([
