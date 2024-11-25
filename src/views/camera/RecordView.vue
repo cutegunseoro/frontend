@@ -1,7 +1,7 @@
 <template>
   <div class="video-container">
     <video ref="videoElement" class="video-element" autoplay muted playsinline></video>
-    <div style="color: red; z-index: 100">{{ debugMsg }}</div>
+    <!-- <div style="color: red; z-index: 100">{{ debugMsg }}</div> -->
     <CameraFooter
       :isRecording="isRecording"
       @toggle-camera="toggleCamera"
