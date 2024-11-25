@@ -14,7 +14,7 @@ const uploadVideo = async (param, success, fail) => {
 
 // 비디오 메타 정보 저장
 const createVideoInfo = async (param, success, fail) => {
-  await apiClient.post(`/videos`).then(success).catch(fail)
+  await apiClient.put(`/videos`, param).then(success).catch(fail)
 }
 
 // 특정 유저가 등록한 모든 동영상 메타 정보 조회
@@ -29,7 +29,7 @@ const getVideosByTravel = async (travelId, success, fail) => {
 
 // 특정 위치 주변의 모든 동영상 메타 정보 조회
 const getVideosByLocation = async (location, success, fail) => {
-  await apiClient.get('/videos/search?coordinates=POINT(10 10)').then(success).catch(fail)
+  await apiClient.get(`/videos/search?coordinates=POINT(${location.lat} ${location.lng})`).then(success).catch(fail)
 }
 
 export { uploadVideo, getVideo, createVideoInfo, getVideosByUser, getVideosByTravel, getVideosByLocation }

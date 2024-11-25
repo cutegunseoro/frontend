@@ -115,7 +115,7 @@ const handleLogout = () => {
   justify-content: center;
   width: 100%;
   /* display: none; */
-  margin: 1rem;
+  margin: 1rem 1rem 2rem 1rem;
 }
 
 .profile-btn {

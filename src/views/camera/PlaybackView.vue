@@ -26,7 +26,7 @@
     <AlertDialog
       :visible="showModal"
       @update:visible="handleModalVisibility"
-      @register="shareVideo"
+      @register="uploadVideoFile"
     >
       <div class="modal-inner">동영상을 저장하시겠습니까?</div>
     </AlertDialog>
@@ -39,6 +39,11 @@ import { useRouter, useRoute } from 'vue-router'
 import axios from 'axios'
 import AlertDialog from '@/components/AlertDialog.vue'
 // import { uploadVideo } from '@/api/video'
+import { createVideoInfo } from '@/api/video'
+import { useTravelStore } from '@/stores/member'
+
+const travelStore = useTravelStore()
+const travelId = travelStore.curTravelInfo.travelId
 
 const router = useRouter()
 const route = useRoute()
@@ -53,7 +58,25 @@ const handleModalVisibility = (newVisibility) => {
   showModal.value = newVisibility
 }
 
-const shareVideo = async () => {
+const uploadVideoMetaInfo = async (videoUrl) => {
+  const { lat, lng } = await getUserCoord()
+
+  const metaInfo = {
+    travelId,
+    coordinates: `POINT(${lat}, ${lng})`,
+    videoUrl,
+  }
+
+  await createVideoInfo(metaInfo, (response) => {
+    if (response.status === 200) {
+      router.push('/history')
+    }
+  }, (err) => {
+    console.log(err)
+  })
+}
+
+const uploadVideoFile = async () => {
   console.log(videoUrl.value)
   console.log('jwt: ', sessionStorage.getItem('jwt'))
 
@@ -80,6 +103,8 @@ const shareVideo = async () => {
     })
 
     console.log('응답 데이터:', response.data)
+    await uploadVideoMetaInfo(response.data.filePath)
+
   } catch (err) {
     console.error('업로드 중 오류 발생:', err)
   }
@@ -90,6 +115,22 @@ const playVideo = () => {
     videoElement.value.play()
     isPlaying.value = true
   }
+}
+
+const getUserCoord = () => {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const {
+          coords: { latitude, longitude },
+        } = position
+        resolve({ lat: latitude, lng: longitude })
+      },
+      (err) => {
+        reject(err)
+      },
+    )
+  })
 }
 
 onMounted(() => {
