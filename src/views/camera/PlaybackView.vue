@@ -14,7 +14,7 @@
         class="camera-icon"
         size="lg"
         :icon="['fas', 'paper-plane']"
-        @click="shareVideo"
+        @click="handleModalVisibility(true)"
       />
       <font-awesome-icon
         class="camera-icon delete-icon"
@@ -23,6 +23,13 @@
         @click="handleDeleteIconClick"
       />
     </div>
+    <AlertDialog
+      :visible="showModal"
+      @update:visible="handleModalVisibility"
+      @register="shareVideo"
+    >
+      <div class="modal-inner">동영상을 저장하시겠습니까?</div>
+    </AlertDialog>
   </div>
 </template>
 
@@ -30,6 +37,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import axios from 'axios'
+import AlertDialog from '@/components/AlertDialog.vue'
 // import { uploadVideo } from '@/api/video'
 
 const router = useRouter()
@@ -39,6 +47,11 @@ const videoElement = ref(null)
 const videoUrl = ref(null)
 
 const isPlaying = ref(false)
+const showModal = ref(false)
+
+const handleModalVisibility = (newVisibility) => {
+  showModal.value = newVisibility
+}
 
 const shareVideo = async () => {
   console.log(videoUrl.value)
@@ -107,6 +120,10 @@ const handleDeleteIconClick = () => {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.modal-inner {
+  padding: 1rem 0rem;
 }
 
 .footer {
