@@ -10,6 +10,14 @@
 <script setup>
 import { ref } from 'vue'
 
+// const props = defineProps({
+//   videos: {
+//     type: Array,
+//   },
+// })
+
+// const videos = ref(props.videos)
+
 const videos = ref([
   { title: '영상 1' },
   { title: '영상 2' },

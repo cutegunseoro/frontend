@@ -40,7 +40,7 @@ import axios from 'axios'
 import AlertDialog from '@/components/AlertDialog.vue'
 // import { uploadVideo } from '@/api/video'
 import { createVideoInfo } from '@/api/video'
-import { useTravelStore } from '@/stores/member'
+import { useTravelStore } from '@/stores/travel'
 
 const travelStore = useTravelStore()
 const travelId = travelStore.curTravelInfo.travelId
@@ -63,7 +63,7 @@ const uploadVideoMetaInfo = async (videoUrl) => {
 
   const metaInfo = {
     travelId,
-    coordinates: `POINT(${lat}, ${lng})`,
+    coordinates: `POINT(${lat} ${lng})`,
     videoUrl,
   }
 

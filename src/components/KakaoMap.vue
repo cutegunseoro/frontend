@@ -1,7 +1,7 @@
 <template>
   <div class="home-view">
     <div class="map-header">
-      <div v-show="selectedPlace" class="address">{{ selectedPlace }}</div>
+      <div v-show="addressName" class="address">{{ addressName }}</div>
       <div class="gps-icon-wrapper" @click="handleGPSIconClick">
         <font-awesome-icon class="gps-icon" size="lg" :icon="['fas', 'location-arrow']" />
       </div>
@@ -36,20 +36,22 @@
             <div class="item-address">{{ place.address_name }}</div>
           </div>
         </div>
-        <VideoBox v-show="!isSearchOpen" />
+        <VideoBox v-show="!isSearchOpen" :videos="videos" />
       </div>
     </div>
   </div>
 </template>
 <script setup>
 import VideoBox from '@/components/VideoBox.vue'
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { getVideosByLocation } from '@/api/video'
 
 const { VITE_KAKAO_MAP_KEY } = import.meta.env
 
 const keyword = ref('')
 const searchedPlaces = ref([])
 const selectedPlace = ref(null)
+const addressName = computed(() => selectedPlace.value?.address_name || '');
 const mapContainer = ref(null)
 
 let mapInstance = null // 지도 인스턴스 저장
@@ -58,9 +60,21 @@ let geocoder = null
 
 const isSearchOpen = ref(false)
 const isHidden = ref(false)
+const videos = ref([])
 
 let startY = 0
 let startTop = 0
+
+const fetchVideosByLocation = async () => {
+  const point = `POINT(${selectedPlace.value.y} ${selectedPlace.value.x})`
+  await getVideosByLocation(point, (response) => {
+    // 불러온 비디오 메타 정보들
+    console.log(response)
+    videos.value = response.data.videos
+  }, (err) => {
+    console.log('비디오를 불러오는 데 실패하였습니다. err: ' + err)
+  })
+}
 
 const startDrag = (e) => {
   startY = e.clientY
@@ -112,6 +126,7 @@ const handleSearchIconClick = () => {
 const handleSearchedPlaceClick = (place) => {
   isSearchOpen.value = false
   addMarker(place)
+  fetchVideosByLocation()
 }
 
 const getUserCoord = () => {
@@ -150,6 +165,7 @@ const loadKakaoMap = (container, lat = 37.501311, lng = 127.039604) => {
       getAddressFromCoords(lat, lng).then((address) => {
         place.address_name = address
         addMarker(place)
+        fetchVideosByLocation()
       })
     })
   }
@@ -162,7 +178,8 @@ const getAddressFromCoords = (lat, lng) => {
 
     geocoder.coord2Address(coord.getLng(), coord.getLat(), (result, status) => {
       if (status === window.kakao.maps.services.Status.OK) {
-        resolve(result[0].address.address_name)
+        const addressName = result[0].address.address_name
+        resolve(addressName)
       } else {
         reject('주소 변환에 실패했습니다.')
       }
@@ -185,7 +202,7 @@ const addMarker = (place) => {
   // 지도의 중심을 마커 위치로 이동
   const adjustedPosition = new window.kakao.maps.LatLng(place.y - 0.0015, place.x)
   mapInstance.setCenter(adjustedPosition)
-  selectedPlace.value = place.address_name
+  selectedPlace.value = place
   console.log(place)
 }
 

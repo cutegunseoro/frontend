@@ -28,8 +28,8 @@ const getVideosByTravel = async (travelId, success, fail) => {
 }
 
 // 특정 위치 주변의 모든 동영상 메타 정보 조회
-const getVideosByLocation = async (location, success, fail) => {
-  await apiClient.get(`/videos/search?coordinates=POINT(${location.lat} ${location.lng})`).then(success).catch(fail)
+const getVideosByLocation = async (point, success, fail) => {
+  await apiClient.get(`/videos/search?coordinates=${point}`).then(success).catch(fail)
 }
 
 export { uploadVideo, getVideo, createVideoInfo, getVideosByUser, getVideosByTravel, getVideosByLocation }
