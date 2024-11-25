@@ -37,6 +37,7 @@ const videos = ref([
   grid-template-columns: repeat(3, 1fr);
   overflow-y: auto;
   width: 100%;
+  background-color: colors.$primary-color;
   /* margin-top: 1rem; */
 }
 

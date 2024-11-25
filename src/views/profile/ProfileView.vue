@@ -24,11 +24,11 @@
     <!-- 프로필 버튼 -->
     <div class="profile-btn-container">
       <!-- <button class="profile-btn">친구 추가</button> -->
-      <button class="profile-btn" @click="handleLogout">로그아웃</button>
+      <button class="profile-btn" @click="handleLogout">프로필 편집</button>
     </div>
 
     <!-- 해당 유저의 동영상 -->
-    <VideoBox />
+    <VideoBox :videos="videos" />
   </div>
 </template>
 
@@ -36,19 +36,34 @@
 import defaultImage from '@/assets/images/kirby_okxooxoo.png'
 import VideoBox from '@/components/VideoBox.vue'
 
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMemberStore } from '@/stores/member'
+import { getVideosByUser } from '@/api/video'
 
 const router = useRouter()
 const memberStore = useMemberStore()
 
 const user = ref(memberStore.memberInfo)
 
+const fetchVideosByUser = async () => {
+  await getVideosByUser(user.value.publicId, (response) => {
+    videos.value = response.data.videos
+  }, (err) => {
+    console.log("비디오를 불러오는 데 실패하였습니다. err: " + err)
+  })
+}
+
 const handleLogout = () => {
   memberStore.logout()
   router.replace('/')
 }
+
+const videos = ref([])
+
+onMounted(async () => {
+  await fetchVideosByUser()
+})
 </script>
 
 <style scoped lang="scss">
