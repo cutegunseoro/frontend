@@ -22,7 +22,7 @@
       </div>
 
       <div class="video-list">
-        <div v-for="video in videos" class="video-item" :key="video.id">
+        <div v-for="video in videos" class="video-item" :key="video.id" @click="handleVideoClick(video.videoUrl)">
           <img class="video-img" :src="TravelImage" />
           <div class="video-info">
             <div>{{ video.title }}</div>
@@ -41,10 +41,11 @@
 import TravelImage from '@/assets/images/Suwon.jpg'
 import { ref, onMounted } from 'vue'
 import { getVideosByTravel } from '@/api/video'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const { VITE_KAKAO_MAP_KEY } = import.meta.env
 const route = useRoute()
+const router = useRouter()
 const travelId = ref(route.params.travelId)
 
 const fetchVideosByTravel = async () => {
@@ -54,6 +55,10 @@ const fetchVideosByTravel = async () => {
   }, (err) => {
     console.log('해당 여행의 비디오들을 불러오는 데 실패했습니다. err: ' + err)
   })
+}
+
+const handleVideoClick = (videoUrl) => {
+  router.push({ name: 'playback', query: { videoUrl } })
 }
 
 const travelItem = ref({
