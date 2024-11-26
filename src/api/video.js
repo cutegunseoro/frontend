@@ -27,6 +27,17 @@ const getVideoUploadUrl = (contentType) => {
   return apiClient.get(`/videos/upload-url?contentType=${contentType}`)
 }
 
+/**
+ * returns
+ {
+    "contentType": "video/webm",
+    "preSignedUrl": "https://travlog-bucket.s3.ap-northeast-2.amazonaws.com/videos/019..."
+  }
+ */
+const getVideoStreamUrl = (videoId) => {
+  return apiClient.get(`/videos/${videoId}/stream-url`)
+}
+
 // 비디오 메타데이터 업로드
 /**
   {
@@ -41,4 +52,4 @@ const uploadVideoMetadata = (param) => {
   return apiClient.put(`/videos`, param)
 }
 
-export { getVideo, getVideosByUser, getVideosByTravel, getVideosByLocation, getVideoUploadUrl, uploadVideoMetadata }
+export { getVideo, getVideosByUser, getVideosByTravel, getVideosByLocation, getVideoUploadUrl, getVideoStreamUrl, uploadVideoMetadata }

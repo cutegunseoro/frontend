@@ -1,5 +1,5 @@
 <template>
-  <div class="video-card" @click="openVideoPopup">
+  <div class="video-card" @click="onClick">
     <img :src="video.thumbnailS3Url" alt="Video Thumbnail" class="thumbnail" />
     <div class="overlay">
       <span class="play-icon">▶</span>
@@ -8,20 +8,20 @@
 </template>
 
 <script setup>
+import { usePopupPlayerStore } from '@/stores/popupPlayer';
+
 const props = defineProps({
   video: {
     type: Object,
     required: true,
     validator: (v) => v.thumbnail && v.videoId,
   },
-  openPopup: {
-    type: Function,
-    required: true,
-  },
 });
 
-const openVideoPopup = () => {
- props.openPopup(props.video.videoId); // Call the injected global function
+const popupPlayerStore = usePopupPlayerStore();
+
+const onClick = () => {
+  popupPlayerStore.play(props.video.videoId)
 };
 </script>
 
