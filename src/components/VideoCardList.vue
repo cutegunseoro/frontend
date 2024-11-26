@@ -1,14 +1,13 @@
 <template>
   <div class="video-container">
-    <div v-for="video in videos" :key="video.title" class="video-card" @click="handleVideoClick(video.id)">
-      {{ video.title }}
-    </div>
+    <VideoCard v-for="video in videos" :video="video" :key="video.videoId" />
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import VideoCard from '@/components/VideoCard.vue';
 
 const router = useRouter()
 
@@ -17,8 +16,6 @@ const props = defineProps({
     type: Array,
   },
 })
-
-const videos = ref(props.videos)
 
 const handleVideoClick = (id) => {
   router.push({ name: 'playback', query: { id } })
@@ -37,21 +34,5 @@ const handleVideoClick = (id) => {
 
 .video-container::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Edge용 스크롤 바 숨기기 */
-}
-
-.video-card {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-  aspect-ratio: 9 / 16; /* 세로 동영상 비율 */
-  width: 100%;
-  background-color: colors.$primary-color;
-  transition: background-color 0.3s ease;
-  cursor: pointer;
-}
-
-.video-card:hover {
-  background-color: colors.$secondary-color;
 }
 </style>
