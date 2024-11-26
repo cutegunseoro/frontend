@@ -26,6 +26,8 @@ import { watch } from 'vue';
 import TravelImage from '@/assets/images/Suwon.jpg'
 import { useRouter } from 'vue-router'
 
+import { removeTimeFromDate } from '@/utils/pretty-datetime';
+
 const props = defineProps({
   travels: Array
 })
@@ -36,11 +38,6 @@ const handleVideoIconClick = (travelId) => {
   router.push(`/history/${travelId}`)
 }
 
-function removeTimeFromDate(dateString) {
-  const date = new Date(dateString);
-  // 'YYYY-MM-DD' 형식으로 날짜만 추출
-  return date.toISOString().slice(0, 10);
-}
 </script>
 
 <style scoped lang="scss">

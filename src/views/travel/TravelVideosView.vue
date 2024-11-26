@@ -5,11 +5,11 @@
         <img :src="TravelImage" class="travel-image" />
         <div class="travel-info">
           <div class="travel-info-top">
-            <div class="travel-area">{{ travelItem.area }}</div>
-            <div class="travel-title">{{ travelItem.title }}</div>
+            <div class="travel-area">{{ travel.area }}</div>
+            <div class="travel-title">{{ travel.title }}</div>
           </div>
           <div class="travel-period">
-            {{ travelItem.startDatetime }} ~ {{ travelItem.endDatetime }}
+            {{ removeTimeFromDate(travel.startDateTime) }} ~ {{ removeTimeFromDate(travel.endDateTime) }}
           </div>
         </div>
       </div>
@@ -47,36 +47,26 @@ import TravelImage from '@/assets/images/Suwon.jpg'
 import { ref, onMounted } from 'vue'
 import { getVideosByTravel } from '@/api/video'
 import { useRoute, useRouter } from 'vue-router'
+import { getTravel } from '@/api/travel';
+import { removeTimeFromDate } from '@/utils/pretty-datetime';
 
 const { VITE_KAKAO_MAP_KEY } = import.meta.env
 const route = useRoute()
 const router = useRouter()
-const travelId = ref(route.params.travelId)
-
-const fetchVideosByTravel = async () => {
-  await getVideosByTravel(
-    travelId,
-    (response) => {
-      videos.value = response.data.videos
-      console.log(videos.value)
-    },
-    (err) => {
-      console.log('해당 여행의 비디오들을 불러오는 데 실패했습니다. err: ' + err)
-    },
-  )
-}
+const travelId = route.params.travelId
 
 const handleVideoClick = (id) => {
-  router.push({ name: 'playback', query: { id } })
+  // router.push({ name: 'playback', query: { id } })
+  alert("WIP")
 }
 
-const travelItem = ref({
-  id: 1,
-  title: '행궁 나들이',
-  area: '수원',
+const travel = ref({
+  id: travelId,
+  title: '',
+  area: '',
   imgUrl: '',
-  startDatetime: '2024-11-26',
-  endDatetime: '2024-11-27',
+  startDateTime: '',
+  endDateTime: '',
 })
 
 const videos = ref([
@@ -202,7 +192,18 @@ const drawPolyline = () => {
 
 onMounted(async () => {
   loadKakaoMap(mapContainer.value)
-  fetchVideosByTravel()
+  travel.value = (await getTravel(travelId)).data.travel
+  console.log(travel.value)
+  await getVideosByTravel(
+    travelId,
+    (response) => {
+      videos.value = response.data.videos
+      console.log(videos.value)
+    },
+    (err) => {
+      console.log('해당 여행의 비디오들을 불러오는 데 실패했습니다. err: ' + err)
+    },
+  )
 })
 </script>
 
