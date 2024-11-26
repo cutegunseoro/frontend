@@ -22,7 +22,12 @@
       </div>
 
       <div class="video-list">
-        <div v-for="video in videos" class="video-item" :key="video.id" @click="handleVideoClick(video.id)">
+        <div
+          v-for="video in videos"
+          class="video-item"
+          :key="video.id"
+          @click="handleVideoClick(video.id)"
+        >
           <img class="video-img" :src="TravelImage" />
           <div class="video-info">
             <div>{{ video.title }}</div>
@@ -49,12 +54,16 @@ const router = useRouter()
 const travelId = ref(route.params.travelId)
 
 const fetchVideosByTravel = async () => {
-  await getVideosByTravel(travelId, (response) => {
-    videos.value = response.data.videos
-    console.log(videos.value)
-  }, (err) => {
-    console.log('해당 여행의 비디오들을 불러오는 데 실패했습니다. err: ' + err)
-  })
+  await getVideosByTravel(
+    travelId,
+    (response) => {
+      videos.value = response.data.videos
+      console.log(videos.value)
+    },
+    (err) => {
+      console.log('해당 여행의 비디오들을 불러오는 데 실패했습니다. err: ' + err)
+    },
+  )
 }
 
 const handleVideoClick = (id) => {
@@ -183,7 +192,7 @@ const drawPolyline = () => {
   polyline = new window.kakao.maps.Polyline({
     path: path,
     strokeWeight: 2,
-    strokeColor: '#874ead',
+    strokeColor: '#248CFA',
     strokeOpacity: 0.7,
     strokeStyle: 'solid',
   })
