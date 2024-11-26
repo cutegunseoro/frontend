@@ -4,7 +4,6 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import App from './App.vue'
 import router from './router'
-import { requestPermission } from './firebase'
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -40,11 +39,4 @@ if ('serviceWorker' in navigator) {
       console.error('Service Worker registration failed:', err);
     });
 }
-
-// Request FCM notification permission
-requestPermission().then(() => {
-  console.log('FCM permission and token obtained.');
-}).catch((error) => {
-  console.error('Error requesting FCM permission:', error);
-});
 

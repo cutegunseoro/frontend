@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { memberPutPushSubscriptions } from "./api/member";
 const { VITE_VAPID_PUBLIC_KEY } = import.meta.env
 
 const firebaseConfig = {
@@ -19,14 +20,15 @@ const firebaseMessaging = getMessaging(firebaseApp);
 
 // 푸시 알림 권한 요청
 async function requestPermission() {
+  console.log("requestPermission");
   try {
     const token = await getToken(firebaseMessaging, {
       vapidKey: VITE_VAPID_PUBLIC_KEY
     });
 
     if (token) {
-      console.log('FCM Token:', token);
-      // TODO: 서버에 해당 토큰 전송하기
+      await memberPutPushSubscriptions(token)
+      console.log('put token on db: ', token)
     } else {
       console.log('No registration token available.');
     }

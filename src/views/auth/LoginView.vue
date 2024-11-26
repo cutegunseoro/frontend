@@ -21,6 +21,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMemberStore } from '@/stores/member'
+import { requestPermission } from '@/firebase';
 
 const router = useRouter()
 const memberStore = useMemberStore()
@@ -40,6 +41,14 @@ const handleLogin = async () => {
       await memberStore.login(loginId.value, password.value)
 
       if (memberStore.isLoggedIn) {
+        // Request FCM notification permission
+        try {
+          console.log("before requestPermission")
+          await requestPermission();
+          console.log('FCM permission and token obtained.');
+        } catch(error) {
+          console.error('Error requesting FCM permission:', error);
+        }
         router.replace('/home')
       }
     } catch (err) {

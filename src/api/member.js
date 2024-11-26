@@ -12,4 +12,6 @@ const memberRegist = async (param, success, fail) => {
   await apiClient.post('/auth/signup', param).then(success).catch(fail)
 }
 
-export { getMeInfo, memberConfirm, memberRegist }
+const memberPutPushSubscriptions = (token) => apiClient.put("/push-subscriptions", {token})
+
+export { getMeInfo, memberConfirm, memberRegist, memberPutPushSubscriptions }
