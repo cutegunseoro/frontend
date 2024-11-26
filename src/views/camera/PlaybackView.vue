@@ -41,10 +41,10 @@ import axios from 'axios'
 import AlertDialog from '@/components/AlertDialog.vue'
 // import { uploadVideo } from '@/api/video'
 import { getVideo, getVideoUploadUrl, uploadVideoMetadata } from '@/api/video'
-import { useTravelStore } from '@/stores/travel'
+import { useMemberStore } from '@/stores/member'
 
-const travelStore = useTravelStore()
-const travelId = travelStore.curTravelInfo.travelId
+const memberStore = useMemberStore()
+const travelId = memberStore.memberInfo.currentTravelId
 
 const router = useRouter()
 const route = useRoute()
@@ -106,6 +106,7 @@ const uploadVideoFile = async () => {
 
     const uploadVideoMetadataRes = await uploadVideoMetadata({
       coordinates: `POINT(${lat} ${lng})`,
+      travelId,
       videoS3Key: objectKey,
       videoContentType: "video/webm"
     })
