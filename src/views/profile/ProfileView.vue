@@ -33,7 +33,7 @@
 
 <script setup>
 import defaultImage from '@/assets/images/kirby_okxooxoo.png'
-import VideoBox from '@/components/VideoBox.vue'
+import VideoBox from '@/components/VideoCardList.vue'
 
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'

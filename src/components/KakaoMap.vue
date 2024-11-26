@@ -42,7 +42,7 @@
   </div>
 </template>
 <script setup>
-import VideoBox from '@/components/VideoBox.vue'
+import VideoBox from '@/components/VideoCardList.vue'
 import { ref, computed, onMounted } from 'vue'
 import { getVideosByLocation } from '@/api/video'
 
