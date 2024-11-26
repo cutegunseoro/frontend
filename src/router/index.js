@@ -14,7 +14,7 @@ import RecordView from '@/views/camera/RecordView.vue'
 import PlaybackView from '@/views/camera/PlaybackView.vue'
 // travel tab
 import TravelListView from '@/views/travel/TravelListView.vue'
-import TravelView from '@/views/travel/TravelView.vue'
+import TravelView from '@/views/travel/TravelVideosView.vue'
 // profile tab
 import ProfileView from '@/views/profile/ProfileView.vue'
 
