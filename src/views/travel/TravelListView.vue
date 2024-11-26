@@ -44,7 +44,7 @@ watch(
   async (newInfo) => {
     if (newInfo && newInfo.publicId) {
       await fetchTravelList(newInfo.publicId)
-      console.log(travels.value)
+      // console.log(travels.value)
     } else {
       console.log('memberInfo가 아직 로드되지 않았습니다.')
     }

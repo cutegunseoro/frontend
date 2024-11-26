@@ -23,15 +23,15 @@
 
       <div class="video-list">
         <div
-          v-for="video in videos"
+          v-for="(video, index) in videos"
           class="video-item"
-          :key="video.id"
-          @click="handleVideoClick(video.id)"
+          :key="video.videoId"
+          @click="handleVideoClick(video.videoId)"
         >
-          <img class="video-img" :src="TravelImage" />
+          <img class="video-img" :src="video.thumbnailS3Url" />
           <div class="video-info">
-            <div>{{ video.title }}</div>
-            <div class="video-date">{{ video.timestamp }}</div>
+            <div>{{ video.title || `${travel.title} ${index + 1}` }}</div>
+            <div class="video-date">{{ video.createdAt }}</div>
           </div>
           <div class="travel-icon-container">
             <font-awesome-icon class="travel-icon delete-icon" :icon="['fas', 'trash']" />
@@ -46,22 +46,21 @@
 import TravelImage from '@/assets/images/Suwon.jpg'
 import { ref, onMounted } from 'vue'
 import { getVideosByTravel } from '@/api/video'
-import { useRoute, useRouter } from 'vue-router'
 import { getTravel } from '@/api/travel';
 import { removeTimeFromDate } from '@/utils/pretty-datetime';
+import { usePopupPlayerStore } from '@/stores/popupPlayer';
+import { convertPointToLatLng } from '@/utils/convert-point';
 
 const { VITE_KAKAO_MAP_KEY } = import.meta.env
-const route = useRoute()
-const router = useRouter()
 
 const props = defineProps({
   travelId: Number
 })
 
+const popupPlayerStore = usePopupPlayerStore()
 
 const handleVideoClick = (id) => {
-  // router.push({ name: 'playback', query: { id } })
-  alert("WIP")
+  popupPlayerStore.play(id)
 }
 
 const travel = ref({
@@ -73,48 +72,7 @@ const travel = ref({
   endDateTime: '',
 })
 
-const videos = ref([
-  {
-    id: 1,
-    title: '영상 1',
-    lat: 37.501311,
-    lng: 127.039604,
-    videoUrl: '',
-    timestamp: '2024-11-26 14:20',
-  },
-  {
-    id: 2,
-    title: '영상 2',
-    lat: 37.502811,
-    lng: 127.041204,
-    videoUrl: '',
-    timestamp: '2024-11-26 14:30',
-  },
-  {
-    id: 3,
-    title: '영상 3',
-    lat: 37.503911,
-    lng: 127.042904,
-    videoUrl: '',
-    timestamp: '2024-11-26 14:40',
-  },
-  {
-    id: 4,
-    title: '영상 4',
-    lat: 37.504711,
-    lng: 127.041404,
-    videoUrl: '',
-    timestamp: '2024-11-26 14:50',
-  },
-  {
-    id: 6,
-    title: '영상 6',
-    lat: 37.505811,
-    lng: 127.044404,
-    videoUrl: '',
-    timestamp: '2024-11-26 15:10',
-  },
-])
+const videos = ref([])
 
 const mapContainer = ref(null)
 
@@ -135,10 +93,6 @@ const loadKakaoMap = (container, lat = 37.501311, lng = 127.039604) => {
       }
 
       mapInstance = new window.kakao.maps.Map(container, options)
-
-      addAllMarkers()
-      setMapBounds()
-      drawPolyline()
     })
   }
 }
@@ -159,9 +113,9 @@ const addMarker = (place) => {
 
 const addAllMarkers = () => {
   if (!mapInstance) return
-
   videos.value.forEach((video) => {
-    const place = { y: video.lat, x: video.lng }
+    const {lat, lng} = convertPointToLatLng(video.coordinates)
+    const place = { x: lat, y: lng }
     addMarker(place)
   })
 }
@@ -179,7 +133,7 @@ const setMapBounds = () => {
 }
 
 const drawPolyline = () => {
-  if (!mapInstance || markers.length === 0) return
+  if (!mapInstance || markers.length <= 1) return
 
   const path = markers.map((marker) => marker.getPosition())
 
@@ -197,12 +151,14 @@ const drawPolyline = () => {
 onMounted(async () => {
   loadKakaoMap(mapContainer.value)
   travel.value = (await getTravel(props.travelId)).data.travel
-  console.log(travel.value)
   await getVideosByTravel(
     props.travelId,
     (response) => {
       videos.value = response.data.videos
       console.log(videos.value)
+      addAllMarkers()
+      setMapBounds()
+      drawPolyline()
     },
     (err) => {
       console.log('해당 여행의 비디오들을 불러오는 데 실패했습니다. err: ' + err)
