@@ -1,22 +1,28 @@
 <template>
-  <div v-if="!currentTravel" class="plan-view">
+  <div v-if="!currentTravelId" class="plan-view">
     <div>현재 진행 중인 여행이 없습니다 . . .</div>
     <button class="plan-btn" @click="handleAddClick">여행 일정 추가</button>
   </div>
-  <div v-else>현재 여행 일정</div>
+  <TravelVideos v-else :travelId="currentTravelId"/>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { getMeInfo } from '@/api/member';
+import TravelVideos from '@/components/TravelVideos.vue';
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-const currentTravel = ref(null)
-
 const router = useRouter()
+
+const currentTravelId = ref(null)
 
 const handleAddClick = () => {
   router.push('/plan/area')
 }
+
+onMounted(async () => {
+  currentTravelId.value = (await getMeInfo).data.member.currentTravelId
+})
 </script>
 
 <style scoped lang="scss">
