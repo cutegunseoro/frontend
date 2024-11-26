@@ -3,7 +3,7 @@
     <div class="image-wrapper vibration" @click="goToHome">
       <img :src="defaultImage" />
     </div>
-    <div class="intro-logo">Let's Travlog . . .</div>
+    <div class="intro-logo">susucup</div>
     <div class="auth-btn-container">
       <div class="auth-btn" @click="goToLogin">로그인</div>
       <div class="auth-btn" @click="goToRegist">회원가입</div>
@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import defaultImage from '@/assets/images/kirby_okxooxoo.png'
+import defaultImage from '@/assets/images/susucup.png'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -38,23 +38,23 @@ const goToHome = () => {
   align-items: center;
   height: 100vh;
   width: 100%;
-  background-color: colors.$primary-color;
+  background-color: #f0f0f0;
+}
+
+.intro-logo {
+  color: #242424;
 }
 
 img {
   width: 90%;
 }
 
-.intro-logo {
-  color: colors.$highlight-color;
-}
-
 .image-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100px;
-  width: 100px;
+  height: 120px;
+  width: 120px;
   border-radius: 50%;
   overflow: hidden;
   margin: 0.5rem;
@@ -81,8 +81,8 @@ img {
   justify-content: center;
   align-items: center;
   height: 3rem;
-  width: 80%;
-  background-color: colors.$secondary-color;
+  width: 70%;
+  background-color: #242424;
   color: white;
   border: none;
   border-radius: 1rem;

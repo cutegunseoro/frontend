@@ -40,7 +40,7 @@ const fetchTravelList = async (publicId) => {
 
 
 watch(
-  () => memberStore.memberInfo,  // memberInfo를 추적
+  () => memberStore.memberInfo, // memberInfo를 추적
   async (newInfo) => {
     if (newInfo && newInfo.publicId) {
       await fetchTravelList(newInfo.publicId)
@@ -49,7 +49,7 @@ watch(
       console.log('memberInfo가 아직 로드되지 않았습니다.')
     }
   },
-  { immediate: true }  // 컴포넌트가 마운트될 때 즉시 실행
+  { immediate: true }, // 컴포넌트가 마운트될 때 즉시 실행
 )
 </script>
 

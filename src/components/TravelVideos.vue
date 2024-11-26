@@ -167,7 +167,7 @@ onMounted(async () => {
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .travel-view {
   display: flex;
   flex-direction: column;
@@ -209,7 +209,7 @@ onMounted(async () => {
 }
 
 .travel-area {
-  background-color: black;
+  background-color: colors.$highlight-color;
   color: white;
   border-radius: 1rem;
   padding: 0.2rem 0.6rem;

@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import defaultImage from '@/assets/images/kirby_okxooxoo.png'
+import defaultImage from '@/assets/images/susucup.png'
 import VideoCardList from '@/components/VideoCardList.vue'
 
 import { ref, watch } from 'vue'
@@ -48,12 +48,15 @@ const memberStore = useMemberStore()
 const user = ref(memberStore.memberInfo)
 
 const fetchVideosByUser = async () => {
-  await getVideosByUser(user.value.publicId, (response) => {
-    videos.value = response.data.videos
-    console.log(videos.value)
-  }, (err) => {
-    console.log("비디오를 불러오는 데 실패하였습니다. err: " + err)
-  })
+  await getVideosByUser(
+    user.value.publicId,
+    (response) => {
+      videos.value = response.data.videos
+    },
+    (err) => {
+      console.log('비디오를 불러오는 데 실패하였습니다. err: ' + err)
+    },
+  )
 }
 
 watch(

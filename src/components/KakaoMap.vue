@@ -51,7 +51,7 @@ const { VITE_KAKAO_MAP_KEY } = import.meta.env
 const keyword = ref('')
 const searchedPlaces = ref([])
 const selectedPlace = ref(null)
-const addressName = computed(() => selectedPlace.value?.address_name || '');
+const addressName = computed(() => selectedPlace.value?.address_name || '')
 const mapContainer = ref(null)
 
 let mapInstance = null // 지도 인스턴스 저장
@@ -67,13 +67,17 @@ let startTop = 0
 
 const fetchVideosByLocation = async () => {
   const point = `POINT(${selectedPlace.value.y} ${selectedPlace.value.x})`
-  await getVideosByLocation(point, (response) => {
-    // 불러온 비디오 메타 정보들
-    console.log(response)
-    videos.value = response.data.videos
-  }, (err) => {
-    console.log('비디오를 불러오는 데 실패하였습니다. err: ' + err)
-  })
+  await getVideosByLocation(
+    point,
+    (response) => {
+      // 불러온 비디오 메타 정보들
+      console.log(response)
+      videos.value = response.data.videos
+    },
+    (err) => {
+      console.log('비디오를 불러오는 데 실패하였습니다. err: ' + err)
+    },
+  )
 }
 
 const startDrag = (e) => {
@@ -343,7 +347,7 @@ input:focus {
 
 .search-result-container {
   width: 100%;
-  background-color: #f5e8ff;
+  background-color: #f0f0f0;
   display: flex;
   flex-direction: column;
   height: calc(50vh - 7rem);
