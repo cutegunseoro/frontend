@@ -61,7 +61,7 @@ const openVideoPopup = () => {
 }
 
 .play-icon {
-  font-size: 3rem;
+  font-size: 2rem;
   color: white;
   opacity: 0; /* Initially hidden */
   transition: opacity 0.3s ease;
