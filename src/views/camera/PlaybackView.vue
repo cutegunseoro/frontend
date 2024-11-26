@@ -40,7 +40,7 @@ import { useRouter, useRoute } from 'vue-router'
 import axios from 'axios'
 import AlertDialog from '@/components/AlertDialog.vue'
 // import { uploadVideo } from '@/api/video'
-import { createVideoInfo, getVideo } from '@/api/video'
+import { getVideo, getVideoUploadUrl, uploadVideoMetadata } from '@/api/video'
 import { useTravelStore } from '@/stores/travel'
 
 const travelStore = useTravelStore()
@@ -56,6 +56,11 @@ const videoId = ref(null)
 const isPlaying = ref(false)
 const showModal = ref(false)
 
+const handleModalVisibility = (newVisibility) => {
+  showModal.value = newVisibility
+}
+
+// 기존 영상 재생 시 사용
 const fetchVideo = async () => {
   await getVideo(videoId, (response) => {
     if (response.status === 200) {
@@ -66,68 +71,54 @@ const fetchVideo = async () => {
   })
 }
 
-const handleModalVisibility = (newVisibility) => {
-  showModal.value = newVisibility
-}
-
-const uploadVideoMetaInfo = async (videoUrl) => {
-  const { lat, lng } = await getUserCoord()
-
-  const metaInfo = {
-    travelId,
-    coordinates: `POINT(${lat} ${lng})`,
-    videoUrl,
-  }
-
-  await createVideoInfo(metaInfo, (response) => {
-    if (response.status === 200) {
-      router.push('/history')
-    }
-  }, (err) => {
-    console.log(err)
-  })
-}
-
-const uploadVideoFile = async () => {
-  console.log(videoUrl.value)
-  console.log('jwt: ', sessionStorage.getItem('jwt'))
-
-  try {
-    // 1. 비디오 Blob 생성
-    const videoBlob = await fetch(videoUrl.value).then((response) => response.blob())
-
-    // 2. Blob을 File 객체로 변환
-    const file = new File([videoBlob], 'video.webm', { type: 'video/webm' })
-
-    // 3. FormData에 파일 추가
-    const formData = new FormData()
-    formData.append('file', file)
-
-    // 4. JWT 가져오기
-    const token = sessionStorage.getItem('jwt')
-
-    // 5. Axios를 통해 multipart 요청 전송
-    const response = await axios.post('http://localhost:8080/videos/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data', // 반드시 multipart 설정
-        Authorization: token ? `Bearer ${token}` : '', // JWT 토큰 포함
-      },
-    })
-
-    console.log('응답 데이터:', response.data)
-    await uploadVideoMetaInfo(response.data.filePath)
-
-  } catch (err) {
-    console.error('업로드 중 오류 발생:', err)
-  }
-}
-
 const playVideo = () => {
   if (videoElement.value) {
     videoElement.value.play()
     isPlaying.value = true
   }
 }
+
+const uploadVideoFile = async () => {
+  // console.log(videoUrl.value)
+  // console.log('jwt: ', sessionStorage.getItem('jwt'))
+
+  try {
+    // 0. 비디오 업로드 url 받아오기
+    const getUrlRes = await getVideoUploadUrl(encodeURIComponent('video/webm'))
+    const {objectKey, preSignedUrl} = getUrlRes.data
+
+    // 1. 비디오 Blob 생성
+    const videoBlob = await fetch(videoUrl.value).then((response) => response.blob())
+
+    // 2. Blob을 File 객체로 변환
+    const file = new File([videoBlob], 'video.webm', { type: 'video/webm' })
+
+    // 3. 비디오 업로드
+    const uploadVideoRes = await axios.put(preSignedUrl, file, {
+      headers: {
+        "Content-Type": "application/octet-stream",
+      },
+      // onUploadProgress: (progressEvent) => {progressEvent.loaded} -> 업로드 상황 업데이트 가능
+    })
+
+    // 4. 비디오 메타데이터 생성 & 업로드
+    const { lat, lng } = await getUserCoord()
+
+    const uploadVideoMetadataRes = await uploadVideoMetadata({
+      coordinates: `POINT(${lat} ${lng})`,
+      videoS3Key: objectKey,
+      videoContentType: "video/webm"
+    })
+
+    if (uploadVideoMetadataRes.status === 200) {
+      router.push('/history')
+    }
+
+  } catch (err) {
+    console.error('업로드 중 오류 발생:', err)
+  }
+}
+
 
 const getUserCoord = () => {
   return new Promise((resolve, reject) => {
