@@ -17,7 +17,7 @@ const closeModal = () => {
 
 const handleRegisterClick = () => {
   emits('register')
-  closeModal();
+  closeModal()
 }
 
 const emits = defineEmits(['update:visible', 'register'])
@@ -59,7 +59,7 @@ const props = defineProps({
 }
 
 .modal-btn {
-  background-color: colors.$secondary-color;
+  background-color: colors.$highlight-color;
   color: white;
   padding: 0.4rem 0.8rem;
   border-radius: 1rem;

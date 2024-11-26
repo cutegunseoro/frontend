@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-import defaultImage from '@/assets/images/kirby_okxooxoo.png'
+import defaultImage from '@/assets/images/susucup.png'
 import VideoBox from '@/components/VideoBox.vue'
 
 import { ref, onMounted } from 'vue'
@@ -47,11 +47,15 @@ const memberStore = useMemberStore()
 const user = ref(memberStore.memberInfo)
 
 const fetchVideosByUser = async () => {
-  await getVideosByUser(user.value.publicId, (response) => {
-    videos.value = response.data.videos
-  }, (err) => {
-    console.log("비디오를 불러오는 데 실패하였습니다. err: " + err)
-  })
+  await getVideosByUser(
+    user.value.publicId,
+    (response) => {
+      videos.value = response.data.videos
+    },
+    (err) => {
+      console.log('비디오를 불러오는 데 실패하였습니다. err: ' + err)
+    },
+  )
 }
 
 const handleLogout = () => {
