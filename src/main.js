@@ -4,6 +4,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import App from './App.vue'
 import router from './router'
+import { requestPermission } from './firebase'
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -30,22 +31,20 @@ app.use(router)
 app.mount('#app')
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/firebase-messaging-sw.js')
+  navigator.serviceWorker.register('/firebase-messaging-sw.js', {type: 'module'})
     .then((registration) => {
       console.log('Service Worker registered with scope:', registration.scope);
-      console.log('서비스워커 등록 완료');
+      console.log('Service Worker registration complete.');
     })
     .catch((err) => {
       console.error('Service Worker registration failed:', err);
     });
 }
 
-if ('Notification' in window && Notification.permission !== 'granted') {
-  Notification.requestPermission().then((permission) => {
-    if (permission === 'granted') {
-      console.log('Notification permission granted.');
-    } else {
-      console.log('Notification permission denied.');
-    }
-  });
-}
+// Request FCM notification permission
+requestPermission().then(() => {
+  console.log('FCM permission and token obtained.');
+}).catch((error) => {
+  console.error('Error requesting FCM permission:', error);
+});
+

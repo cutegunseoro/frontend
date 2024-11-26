@@ -12,18 +12,21 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
-const app = initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(firebaseConfig);
 
 // Firebase Messaging 초기화
-const messaging = getMessaging(app);
+const firebaseMessaging = getMessaging(firebaseApp);
 
 // 푸시 알림 권한 요청
-export const requestPermission = async () => {
+async function requestPermission() {
   try {
-    const token = await getToken(messaging, { vapidKey: VITE_VAPID_PUBLIC_KEY });
+    const token = await getToken(firebaseMessaging, {
+      vapidKey: VITE_VAPID_PUBLIC_KEY
+    });
+
     if (token) {
       console.log('FCM Token:', token);
-      // 서버에 토큰을 저장하거나 푸시 알림을 보낼 때 사용
+      // TODO: 서버에 해당 토큰 전송하기
     } else {
       console.log('No registration token available.');
     }
@@ -32,14 +35,26 @@ export const requestPermission = async () => {
   }
 };
 
-onMessage(messaging, (payload) => {
-  console.log('Message received. ', payload);
+// foreground notification
+onMessage(firebaseMessaging, (payload) => {
+  console.log('Received foreground message: ', payload);
 
-  // UI에 알림 표시
-  if (Notification.permission === 'granted') {
-    new Notification(payload.notification.title, {
-      body: payload.notification.body,
-      icon: payload.notification.icon,
+  const notificationTitle = payload.notification?.title || 'Default Title';
+  const notificationOptions = {
+    body: payload.notification?.body || 'Default Body',
+    icon: payload.notification?.icon || '/icon-192x192.png',
+  };
+
+  // use service worker if possible
+  if (navigator.serviceWorker?.ready) {
+    navigator.serviceWorker.ready.then((registration) => {
+      registration.showNotification(notificationTitle, notificationOptions);
     });
+  } else if (Notification.permission === 'granted') {
+    new Notification(notificationTitle, notificationOptions);
+  } else {
+    console.error('Notification permissions not granted');
   }
 });
+
+export {requestPermission};
