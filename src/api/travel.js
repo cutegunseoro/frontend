@@ -9,6 +9,7 @@ const createTravel = async (param, success, fail) => {
 
 // 모든 여행 일정 조회
 const getTravelsByUser = async (publicId, success, fail) => {
+  // console.log(publicId)
   await apiClient.get(`/members/${publicId}/travels`).then(success).catch(fail)
 }
 

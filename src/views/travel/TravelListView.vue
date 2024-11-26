@@ -12,7 +12,7 @@
             <div class="travel-area">{{ travelItem.area }}</div>
             <div class="travel-title">{{ travelItem.title }}</div>
             <div class="travel-period">
-              {{ travelItem.startDatetime }} ~ {{ travelItem.endDatetime }}
+              {{ removeTimeFromDate(travelItem.startDateTime) }} ~ {{ removeTimeFromDate(travelItem.endDateTime) }}
             </div>
           </div>
           <div class="travel-icon-container">
@@ -33,7 +33,7 @@
 import TravelImage from '@/assets/images/Suwon.jpg'
 import { getTravelsByUser } from '@/api/travel'
 
-import { ref, onMounted } from 'vue'
+import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMemberStore } from '@/stores/member'
 
@@ -49,8 +49,13 @@ const handleVideoIconClick = (travelId) => {
   router.push(`/history/${travelId}`)
 }
 
-const fetchTravelList = async () => {
-  const publicId = memberStore.memberInfo.value?.publicId
+function removeTimeFromDate(dateString) {
+  const date = new Date(dateString);
+  // 'YYYY-MM-DD' 형식으로 날짜만 추출
+  return date.toISOString().slice(0, 10);
+}
+
+const fetchTravelList = async (publicId) => {
   await getTravelsByUser(publicId, (response) => {
     travelList.value = response.data.travels
   }, (err) => {
@@ -58,52 +63,20 @@ const fetchTravelList = async () => {
   })
 }
 
-const travelList = ref([
-  {
-    id: 1,
-    title: '행궁 나들이',
-    area: '수원',
-    imgUrl: '',
-    startDatetime: '2024-11-26',
-    endDatetime: '2024-11-27',
-  },
-  {
-    id: 2,
-    title: '행궁 나들이',
-    area: '수원',
-    imgUrl: '',
-    startDatetime: '2024-11-26',
-    endDatetime: '2024-11-27',
-  },
-  {
-    id: 3,
-    title: '행궁 나들이',
-    area: '수원',
-    imgUrl: '',
-    startDatetime: '2024-11-26',
-    endDatetime: '2024-11-27',
-  },
-  {
-    id: 4,
-    title: '행궁 나들이',
-    area: '수원',
-    imgUrl: '',
-    startDatetime: '2024-11-26',
-    endDatetime: '2024-11-27',
-  },
-  {
-    id: 5,
-    title: '행궁 나들이',
-    area: '수원',
-    imgUrl: '',
-    startDatetime: '2024-11-26',
-    endDatetime: '2024-11-27',
-  },
-])
+const travelList = ref([])
 
-onMounted(async () => {
-  await fetchTravelList()
-})
+watch(
+  () => memberStore.memberInfo,  // memberInfo를 추적
+  async (newInfo) => {
+    if (newInfo && newInfo.publicId) {
+      await fetchTravelList(newInfo.publicId)
+      console.log(travelList.value)
+    } else {
+      console.log('memberInfo가 아직 로드되지 않았습니다.')
+    }
+  },
+  { immediate: true }  // 컴포넌트가 마운트될 때 즉시 실행
+)
 </script>
 
 <style scoped lang="scss">

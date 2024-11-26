@@ -4,9 +4,7 @@ import { memberConfirm, memberRegist } from '@/api/member'
 
 export const useMemberStore = defineStore('member', () => {
   // 기본 값
-  const memberInfo = ref({
-    publicId: "susucup"
-  })
+  const memberInfo = ref(null)
 
   // 현재 로그인 상태
   const isLoggedIn = ref(false)

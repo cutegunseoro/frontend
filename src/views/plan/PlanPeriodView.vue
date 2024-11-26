@@ -61,7 +61,7 @@ const handleRegister = async () => {
 
   const payload = {
     title: title.value,
-    city: city,
+    area: city,
     startDateTime,
     endDateTime,
   }
