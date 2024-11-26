@@ -6,28 +6,27 @@
         <div class="image-wrapper">
           <img :src="defaultImage" alt="profile" class="user-image" />
         </div>
-        <div>{{ user.publicId }}</div>
+        <div>@{{ user.publicId }}</div>
       </div>
       <!-- 프로필 소개 -->
       <div class="user-info-right">
         <div class="user-bio">
-          <div class="user-info-title">Bio</div>
-          <div class="user-info-content">{{ user.publicId }}</div>
+          <div class="user-info-title">Name</div>
+          <div class="user-info-content">{{ user.displayName || user.publicId }}</div>
         </div>
         <div class="user-travel-style">
-          <div class="user-info-title">Travel Style</div>
-          <div class="user-info-content">{{ user.publicId }}</div>
+          <div class="user-info-title">Bio</div>
+          <div class="user-info-content">{{ user.bio }}</div>
         </div>
       </div>
     </div>
 
     <!-- 프로필 버튼 -->
-    <div class="profile-btn-container">
+    <div class="profile-btn-container" v-if="false">
       <!-- <button class="profile-btn">친구 추가</button> -->
       <button class="profile-btn" @click="handleLogout">프로필 편집</button>
     </div>
 
-    <!-- 해당 유저의 동영상 -->
     <VideoBox :videos="videos" />
   </div>
 </template>
